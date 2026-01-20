@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+
+const filePath = process.argv[2];
+if (!filePath) {
+  console.error("Missing commit message file path");
+  process.exit(1);
+}
+
+const raw = fs.readFileSync(filePath, "utf8");
+const message = raw.trim();
+if (!message) {
+  console.error("Commit message is empty");
+  process.exit(1);
+}
+
+const lines = raw.split(/\r?\n/);
+const header = lines.find((line) => line.trim().length > 0) ?? "";
+
+if (!header) {
+  console.error("Missing commit header line");
+  process.exit(1);
+}
+
+if (/^Merge\s/i.test(header) || /^Revert\s/i.test(header) || /^(fixup|squash)!\s/.test(header)) {
+  process.exit(0);
+}
+
+const types = [
+  "feat",
+  "fix",
+  "docs",
+  "style",
+  "refactor",
+  "perf",
+  "test",
+  "build",
+  "ci",
+  "chore",
+  "revert",
+];
+const typeGroup = types.join("|");
+const headerRule = new RegExp(`^(${typeGroup})(\\([^)]+\\))?: (.+)$`);
+const match = header.match(headerRule);
+
+if (!match) {
+  console.error("Header must be: <type>(<scope>): <subject>");
+  console.error(`Allowed types: ${types.join(", ")}`);
+  process.exit(1);
+}
+
+const subject = match[3].trim();
+if (!subject) {
+  console.error("Subject cannot be empty");
+  process.exit(1);
+}
+
+if (/[.\u3002]$/.test(subject)) {
+  console.error("Subject must not end with a period");
+  process.exit(1);
+}
+
+const emojiRule = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+if (emojiRule.test(raw)) {
+  console.error("Emoji are not allowed in commit messages");
+  process.exit(1);
+}
+
+if (header.length > 50) {
+  console.warn("Hint: keep header within 50 characters when possible");
+}
