@@ -316,7 +316,7 @@
     </div>
     <!-- 关于这个小破站 -->
     <div class="about-content" style="display: flex">
-      <div class="about-item">
+      <div class="about-item about-site">
         <span class="tip">关于这个小破站</span>
         <span class="title2">一个见证我们存在的小站</span>
         <p class="text">
@@ -325,12 +325,10 @@
         <p class="text">
           但它承载了我们过去的时光，证明我们曾真实存在过。
         </p>
-        <p style="position: absolute; bottom: -8px; left: 10px; font-size: 12px; color: gray;">
-          由Kilock提供技术支持
-        </p>
-        <p style="position: absolute; bottom: -8px; right: 10px; font-size: 12px; color: gray;">
-          这只是我们的一小部分
-        </p>
+        <div class="about-site-footer">
+          <span>由Kilock提供技术支持</span>
+          <span>这只是我们的一小部分</span>
+        </div>
       </div>
       
     </div>
@@ -705,6 +703,25 @@ onMounted(() => {
             &:hover {
               background-color: var(--main-card-background);
             }
+          }
+        }
+      }
+      &.about-site {
+        .about-site-footer {
+          margin-top: auto;
+          padding-top: 10px;
+          border-top: 1px dashed var(--main-card-border);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          font-size: 12px;
+          color: var(--main-color-gray);
+        }
+        @media (max-width: 768px) {
+          .about-site-footer {
+            align-items: flex-start;
+            flex-direction: column;
           }
         }
       }
