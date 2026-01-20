@@ -36,6 +36,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: build
+        env:
+          VITEPRESS_BASE: "/"
+          SITE_URL: "https://清凤.fun"
         run: pnpm build
 
       - name: upload pages artifact
