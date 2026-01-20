@@ -38,6 +38,11 @@
           <i class="iconfont icon-time" />
           {{ formatTimestamp(page?.lastUpdated || postMetaData.lastModified) }}
         </span>
+        <span class="meta views">
+          <i class="iconfont icon-visibility" />
+          <span v-if="isLocal">--</span>
+          <span v-else id="busuanzi_value_page_pv">0</span>
+        </span>
         <!-- 热度 -->
         <span v-if="showCommentMeta" class="hot meta">
           <i class="iconfont icon-fire" />
@@ -107,14 +112,16 @@
 
 <script setup>
 import { formatTimestamp } from "@/utils/helper";
-import { generateId } from "@/utils/commonTools";
+import { generateId, loadScript } from "@/utils/commonTools";
 import initFancybox from "@/utils/initFancybox";
 
+const route = useRoute();
 const { page, theme, frontmatter } = useData();
 
 // 评论元素
 const commentRef = ref(null);
 const showCommentMeta = computed(() => theme.value?.comment?.type !== "giscus");
+const isLocal = ref(false);
 
 // 获取对应文章数据
 const postMetaData = computed(() => {
@@ -122,9 +129,31 @@ const postMetaData = computed(() => {
   return theme.value.postData.find((item) => item.id === postId);
 });
 
+const updateLocalStatus = () => {
+  if (typeof window === "undefined") return;
+  const host = window.location.hostname;
+  isLocal.value = ["localhost", "127.0.0.1", "0.0.0.0"].includes(host);
+};
+
+const refreshBusuanzi = async () => {
+  if (isLocal.value) return;
+  await nextTick();
+  await loadScript("https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js", {
+    async: true,
+    reload: true,
+  });
+};
+
 onMounted(() => {
+  updateLocalStatus();
+  refreshBusuanzi();
   initFancybox(theme.value);
 });
+
+watch(
+  () => route.path,
+  () => refreshBusuanzi(),
+);
 </script>
 
 <style lang="scss" scoped>
@@ -234,6 +263,13 @@ onMounted(() => {
             background-color: var(--main-color-bg);
             .iconfont {
               color: var(--main-color);
+            }
+          }
+        }
+        &.views {
+          #busuanzi_value_page_pv {
+            &::after {
+              content: " 次";
             }
           }
         }
