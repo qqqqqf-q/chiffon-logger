@@ -4,6 +4,7 @@
     <div class="sticky">
       <Toc v-if="theme.aside.toc.enable && showToc" class="weidgets" />
       <Countdown class="weidgets" />
+      <LifeDays v-if="theme.aside.lifeDays?.enable" class="weidgets" />
       <Tags v-if="theme.aside.tags.enable" class="weidgets" />
       <SiteData v-if="theme.aside.siteData.enable" class="weidgets" />
     </div>

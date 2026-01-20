@@ -403,6 +403,14 @@ export const themeConfig = {
         date: ["11-15", "12-08"],
       },
     },
+    // 存活天数
+    lifeDays: {
+      enable: true,
+      data: [
+        { name: "清凤", date: "20091115", status: "Alive" },
+        { name: "kilock", date: "20081208", status: "Still alive" },
+      ],
+    },
     // 站点数据
     siteData: {
       enable: true,
