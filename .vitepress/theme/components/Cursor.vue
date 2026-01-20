@@ -27,12 +27,24 @@ onMounted(() => {
   let ringY = 0;
   let rafId = 0;
   let visible = false;
+  let suppress = false;
 
   const setVisible = (next) => {
     if (visible === next) return;
     visible = next;
     dot.classList.toggle("is-visible", next);
     ring.classList.toggle("is-visible", next);
+  };
+
+  const isGiscusArea = (target) => {
+    if (!(target instanceof Element)) return false;
+    return Boolean(target.closest(".comment-content.giscus"));
+  };
+
+  const setSuppress = (next) => {
+    if (suppress === next) return;
+    suppress = next;
+    if (suppress) setVisible(false);
   };
 
   const render = () => {
@@ -46,6 +58,7 @@ onMounted(() => {
   };
 
   const handleMove = (event) => {
+    if (suppress) return;
     x = event.clientX;
     y = event.clientY;
     if (!visible) {
@@ -65,6 +78,20 @@ onMounted(() => {
     setVisible(false);
   };
 
+  const handleHover = (event) => {
+    const targetInGiscus = isGiscusArea(event.target);
+    const relatedInGiscus = isGiscusArea(event.relatedTarget);
+
+    if (event.type === "mouseover" && targetInGiscus && !relatedInGiscus) {
+      setSuppress(true);
+      return;
+    }
+
+    if (event.type === "mouseout" && targetInGiscus && !relatedInGiscus) {
+      setSuppress(false);
+    }
+  };
+
   const handleVisibility = () => {
     if (document.hidden) setVisible(false);
   };
@@ -72,6 +99,8 @@ onMounted(() => {
   window.addEventListener("mousemove", handleMove, { passive: true });
   window.addEventListener("mouseout", handleOut);
   window.addEventListener("blur", handleBlur);
+  document.addEventListener("mouseover", handleHover);
+  document.addEventListener("mouseout", handleHover);
   document.addEventListener("visibilitychange", handleVisibility);
 
   rafId = requestAnimationFrame(render);
@@ -81,6 +110,8 @@ onMounted(() => {
     window.removeEventListener("mousemove", handleMove);
     window.removeEventListener("mouseout", handleOut);
     window.removeEventListener("blur", handleBlur);
+    document.removeEventListener("mouseover", handleHover);
+    document.removeEventListener("mouseout", handleHover);
     document.removeEventListener("visibilitychange", handleVisibility);
   };
 });

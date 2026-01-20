@@ -151,6 +151,17 @@ body * {
   cursor: none !important;
 }
 
+#main-comment .comment-content.giscus,
+#main-comment .comment-content.giscus * {
+  cursor: auto !important;
+}
+
+#main-comment .comment-content.giscus textarea,
+#main-comment .comment-content.giscus input,
+#main-comment .comment-content.giscus [contenteditable="true"] {
+  cursor: text !important;
+}
+
 .site-cursor {
   position: fixed;
   top: 0;
