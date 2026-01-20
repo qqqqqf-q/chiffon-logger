@@ -272,8 +272,8 @@
     <div class="about-content" style="grid-template-columns: 2fr 3fr">
       <!-- 数据 -->
       <div
-          class="about-item static image"
-          style="background-image: url(/images/logo/nacho3.jpg);"
+        class="about-item static image stats-card"
+        style="background-image: url(/images/logo/nacho3.jpg);"
       >
         <div class="image-content">
           <span class="tip">数据</span>
@@ -961,6 +961,41 @@ onMounted(() => {
               font-weight: bold;
             }
           }
+        }
+      }
+      &.stats-card {
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.35);
+          z-index: 1;
+          pointer-events: none;
+        }
+        .image-content {
+          color: #f5f7fa;
+        }
+        .tip {
+          color: rgba(245, 247, 250, 0.9);
+        }
+        .title2 {
+          color: #ffffff;
+        }
+        .static-name {
+          color: rgba(245, 247, 250, 0.85);
+        }
+        .static-num {
+          color: #ffffff;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+        .image-desc {
+          color: rgba(245, 247, 250, 0.8);
+        }
+        .image-desc a {
+          color: rgba(245, 247, 250, 0.9);
+        }
+        .image-desc a:hover {
+          color: #ffffff;
         }
       }
       &.map {
