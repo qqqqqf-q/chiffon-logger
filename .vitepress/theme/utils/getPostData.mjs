@@ -3,6 +3,24 @@ import { globby } from "globby";
 import matter from "gray-matter";
 import fs from "fs-extra";
 
+const countPostWords = (rawContent = "") => {
+  if (!rawContent) return 0;
+  let text = rawContent
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/~~~[\s\S]*?~~~/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, "$1")
+    .replace(/^\s*\[[^\]]+\]:\s*.*$/gm, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/[#>*_~]/g, " ")
+    .replace(/\s+/g, " ");
+  const cjkCount = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const wordCount = (text.match(/[A-Za-z0-9]+(?:'[A-Za-z0-9]+)?/g) || []).length;
+  return cjkCount + wordCount;
+};
+
 /**
  * 获取 posts 目录下所有 Markdown 文件的路径
  * @returns {Promise<string[]>} - 文件路径数组
@@ -53,18 +71,19 @@ export const getAllPosts = async () => {
       paths.map(async (item) => {
         try {
           // 读取文件内容
-          const content = await fs.readFile(item, "utf-8");
+          const fileContent = await fs.readFile(item, "utf-8");
           // 文件的元数据
           const stat = await fs.stat(item);
           // 获取文件创建时间和最后修改时间
           const { birthtimeMs, mtimeMs } = stat;
           // 解析 front matter
-          const { data } = matter(content);
+          const { data, content } = matter(fileContent);
           const { title, date, categories, description, tags, top, cover } = data;
           // 计算文章的过期天数
           const expired = Math.floor(
             (new Date().getTime() - new Date(date).getTime()) / (1000 * 60 * 60 * 24),
           );
+          const wordCount = countPostWords(content);
           // 返回文章对象
           return {
             id: generateId(item),
@@ -75,6 +94,7 @@ export const getAllPosts = async () => {
             tags,
             categories,
             description,
+            wordCount,
             regularPath: `/${item.replace(".md", ".html")}`,
             top,
             cover,

@@ -65,16 +65,23 @@
         <Copyright v-if="frontmatter.copyright !== false" :postData="postMetaData" />
         <!-- 其他信息 -->
         <div class="other-meta">
-          <div class="all-tags">
-            <a
-              v-for="(item, index) in postMetaData.tags"
-              :key="index"
-              :href="`/pages/tags/${item}`"
-              class="tag-item"
-            >
-              <i class="iconfont icon-hashtag" />
-              <span class="name">{{ item }}</span>
-            </a>
+          <div class="meta-left">
+            <div class="all-tags">
+              <a
+                v-for="(item, index) in postMetaData.tags"
+                :key="index"
+                :href="`/pages/tags/${item}`"
+                class="tag-item"
+              >
+                <i class="iconfont icon-hashtag" />
+                <span class="name">{{ item }}</span>
+              </a>
+            </div>
+            <div v-if="postMetaData?.wordCount !== undefined" class="post-word-count">
+              <i class="iconfont icon-article" />
+              <span class="label">字数</span>
+              <span class="value">{{ postMetaData.wordCount }}</span>
+            </div>
           </div>
           <a
             href="https://eqnxweimkr5.feishu.cn/share/base/form/shrcnCXCPmxCKKJYI3RKUfefJre"
@@ -256,17 +263,24 @@ onMounted(() => {
           color: var(--main-warning-color);
         }
       }
-      .other-meta {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        margin: 2rem 0;
-        opacity: 0.8;
-        .all-tags {
+        .other-meta {
           display: flex;
           flex-direction: row;
           align-items: center;
+          justify-content: space-between;
+          margin: 2rem 0;
+          opacity: 0.8;
+          .meta-left {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+          }
+          .all-tags {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
           .tag-item {
             display: flex;
             flex-direction: row;
@@ -288,13 +302,31 @@ onMounted(() => {
               .iconfont {
                 color: var(--main-color);
               }
+              }
             }
           }
-        }
-        .report {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
+          .post-word-count {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            background-color: var(--main-card-border);
+            .iconfont {
+              margin-right: 6px;
+              opacity: 0.6;
+              font-weight: normal;
+            }
+            .label {
+              margin-right: 4px;
+            }
+          }
+          .report {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
           padding: 6px 12px;
           font-size: 14px;
           font-weight: bold;
@@ -348,15 +380,19 @@ onMounted(() => {
       }
     }
     .post-content {
-      .post-article {
-        border: none;
-        padding: 20px 30px;
-        .other-meta {
-          margin: 1rem 0 2rem 0;
-          flex-direction: column;
-          .all-tags {
-            flex-wrap: wrap;
-            .tag-item {
+        .post-article {
+          border: none;
+          padding: 20px 30px;
+          .other-meta {
+            margin: 1rem 0 2rem 0;
+            flex-direction: column;
+            .meta-left {
+              width: 100%;
+              justify-content: center;
+            }
+            .all-tags {
+              flex-wrap: wrap;
+              .tag-item {
               margin-top: 12px;
             }
           }
