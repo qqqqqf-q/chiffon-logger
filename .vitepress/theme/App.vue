@@ -38,12 +38,15 @@
   <RightMenu ref="rightMenuRef" />
   <!-- 全局消息 -->
   <Message />
+  <!-- 自定义光标 -->
+  <Cursor />
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
 import { mainStore } from "@/store";
 import { calculateScroll, specialDayGray } from "@/utils/helper";
+import Cursor from "@/components/Cursor.vue";
 
 const route = useRoute();
 const store = mainStore();

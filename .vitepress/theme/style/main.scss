@@ -142,6 +142,55 @@ body {
     background-color 0.3s;
 }
 
+html,
+body {
+  cursor: none;
+}
+
+body * {
+  cursor: none !important;
+}
+
+.site-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  transform: translate3d(var(--cursor-x, 0px), var(--cursor-y, 0px), 0) translate(-50%, -50%);
+}
+
+.site-cursor.is-visible {
+  opacity: 1;
+}
+
+.site-cursor.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.site-cursor.cursor-ring {
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+@media (pointer: coarse) {
+  html,
+  body,
+  body * {
+    cursor: auto !important;
+  }
+  .site-cursor {
+    display: none;
+  }
+}
+
 a {
   text-decoration: none;
   color: var(--main-font-color);
