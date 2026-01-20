@@ -56,7 +56,7 @@ const { loadingStatus, footerIsShow, themeValue, themeType, backgroundType, font
 
 // 右键菜单
 const rightMenuRef = ref(null);
-const magneticSelector = ".s-card.hover";
+const magneticSelector = ".s-card.hover, .magnetic-card";
 let magneticObserver = null;
 
 // 判断是否为文章页面
@@ -82,34 +82,50 @@ const copyTip = () => {
 const initMagneticCard = (card) => {
   if (card.dataset.magneticReady === "true") return;
   card.dataset.magneticReady = "true";
-  card.style.willChange = "transform";
+  card.style.willChange = "translate";
 
   let rafId = 0;
-  let nextX = 0;
-  let nextY = 0;
+  let isActive = false;
+  let currentX = 0;
+  let currentY = 0;
+  let targetX = 0;
+  let targetY = 0;
 
-  const applyTransform = () => {
-    card.style.transform = `translate(${nextX}px, ${nextY}px) scale(1.02)`;
-    rafId = 0;
+  const update = () => {
+    currentX += (targetX - currentX) * 0.16;
+    currentY += (targetY - currentY) * 0.16;
+    card.style.setProperty("translate", `${currentX}px ${currentY}px`);
+    const settled =
+      Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1;
+    if (!isActive && settled) {
+      currentX = targetX;
+      currentY = targetY;
+      card.style.setProperty("translate", `${currentX}px ${currentY}px`);
+      rafId = 0;
+      return;
+    }
+    rafId = requestAnimationFrame(update);
+  };
+
+  const start = () => {
+    if (!rafId) rafId = requestAnimationFrame(update);
   };
 
   const handleMove = (event) => {
     const rect = card.getBoundingClientRect();
     const x = event.clientX - rect.left - rect.width / 2;
     const y = event.clientY - rect.top - rect.height / 2;
-    nextX = x / 15;
-    nextY = y / 15;
-    if (!rafId) {
-      rafId = requestAnimationFrame(applyTransform);
-    }
+    targetX = x / 15;
+    targetY = y / 15;
+    isActive = true;
+    start();
   };
 
   const handleLeave = () => {
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = 0;
-    }
-    card.style.transform = "translate(0px, 0px) scale(1)";
+    isActive = false;
+    targetX = 0;
+    targetY = 0;
+    start();
   };
 
   card.addEventListener("mousemove", handleMove);
