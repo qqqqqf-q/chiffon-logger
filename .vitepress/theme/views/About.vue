@@ -50,7 +50,7 @@
         </div>
         <div class="links">
           <a
-            class="link-btn"
+            class="link-btn magnetic-card"
             href="https://github.com/qqqqqf-q"
             target="_blank"
             rel="noopener noreferrer"
@@ -63,7 +63,7 @@
             <span>GitHub</span>
           </a>
           <a
-            class="link-btn"
+            class="link-btn magnetic-card"
             href="https://www.nodeseek.com/space/21917#/general"
             target="_blank"
             rel="noopener noreferrer"
@@ -75,7 +75,7 @@
             </svg>
             <span>NodeSeek</span>
           </a>
-          <a class="link-btn" href="https://x.com/qqqqqf5" target="_blank" rel="noopener noreferrer">
+          <a class="link-btn magnetic-card" href="https://x.com/qqqqqf5" target="_blank" rel="noopener noreferrer">
             <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M18.244 2.25h3.308l-7.227 8.258 8.502 11.242h-6.64l-5.206-6.798-5.945 6.798H1.728l7.73-8.844L1.25 2.25h6.808l4.704 6.217L18.244 2.25zm-1.16 17.52h1.833L7.084 4.126H5.117L17.084 19.77z"
@@ -148,7 +148,7 @@
             v-for="(item, index) in projectsData"
             :key="index"
             :href="item.link"
-            class="project-card"
+            class="project-card magnetic-card"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -523,22 +523,30 @@ onMounted(() => {
     grid-template-columns: auto auto;
     gap: 20px;
     margin-bottom: 20px;
-    .about-item {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
+      .about-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
       padding: 1.2rem 2rem;
-      border-radius: 12px;
-      background-color: var(--main-card-background);
-      border: 1px solid var(--main-card-border);
-      box-shadow: 0 8px 12px -4px var(--main-border-shadow);
-      overflow: hidden;
-      .tip {
-        font-size: 14px;
-        opacity: 0.8;
-        margin-bottom: 12px;
-      }
+        border-radius: 12px;
+        background-color: var(--main-card-background);
+        border: 1px solid var(--main-card-border);
+        box-shadow: 0 8px 12px -4px var(--main-border-shadow);
+        overflow: hidden;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        &:not(.child):hover {
+          border-color: var(--main-color);
+          box-shadow:
+            0 8px 12px -4px var(--main-border-shadow),
+            0 0 0 1px var(--main-color),
+            0 0 20px -10px var(--main-color);
+        }
+        .tip {
+          font-size: 14px;
+          opacity: 0.8;
+          margin-bottom: 12px;
+        }
       .title1 {
         font-size: 36px;
         font-weight: bold;
