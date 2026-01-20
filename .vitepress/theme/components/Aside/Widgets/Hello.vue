@@ -14,10 +14,10 @@
         <span class="desc">{{ theme.siteMeta.description }}</span>
       </div>
       <div class="link">
-        <a href="https://github.com/imsyy/" target="_blank" class="social-link">
+        <a v-if="githubLink" :href="githubLink" target="_blank" class="social-link">
           <i class="iconfont icon-github"></i>
         </a>
-        <a href="mailto:one@imsyy.top" target="_blank" class="social-link">
+        <a v-if="emailLink" :href="emailLink" target="_blank" class="social-link">
           <i class="iconfont icon-email"></i>
         </a>
       </div>
@@ -29,6 +29,15 @@
 import { getGreetings } from "@/utils/helper";
 
 const { site, theme } = useData();
+const githubLink = computed(
+  () => theme.value?.footer?.social?.find((item) => item.icon === "github")?.link ?? "",
+);
+const emailLink = computed(() => {
+  const link = theme.value?.footer?.social?.find((item) => item.icon === "email")?.link;
+  if (link) return link;
+  const authorEmail = theme.value?.siteMeta?.author?.email;
+  return authorEmail ? `mailto:${authorEmail}` : "";
+});
 
 // 问候数据
 const helloClick = ref(0);
