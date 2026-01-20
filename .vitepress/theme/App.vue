@@ -56,6 +56,8 @@ const { loadingStatus, footerIsShow, themeValue, themeType, backgroundType, font
 
 // 右键菜单
 const rightMenuRef = ref(null);
+const magneticSelector = ".s-card.hover";
+let magneticObserver = null;
 
 // 判断是否为文章页面
 const isPostPage = computed(() => {
@@ -75,6 +77,62 @@ const copyTip = () => {
   if (copiedText.trim().length > 0 && typeof $message !== "undefined") {
     $message.success("复制成功，在转载时请标注本文地址");
   }
+};
+
+const initMagneticCard = (card) => {
+  if (card.dataset.magneticReady === "true") return;
+  card.dataset.magneticReady = "true";
+  card.style.willChange = "transform";
+
+  let rafId = 0;
+  let nextX = 0;
+  let nextY = 0;
+
+  const applyTransform = () => {
+    card.style.transform = `translate(${nextX}px, ${nextY}px) scale(1.02)`;
+    rafId = 0;
+  };
+
+  const handleMove = (event) => {
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+    nextX = x / 15;
+    nextY = y / 15;
+    if (!rafId) {
+      rafId = requestAnimationFrame(applyTransform);
+    }
+  };
+
+  const handleLeave = () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    card.style.transform = "translate(0px, 0px) scale(1)";
+  };
+
+  card.addEventListener("mousemove", handleMove);
+  card.addEventListener("mouseleave", handleLeave);
+};
+
+const setupMagneticCards = () => {
+  if (typeof window === "undefined") return;
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  document.querySelectorAll(magneticSelector).forEach(initMagneticCard);
+
+  if (magneticObserver) return;
+  magneticObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (!(node instanceof HTMLElement)) return;
+        if (node.matches?.(magneticSelector)) initMagneticCard(node);
+        node.querySelectorAll?.(magneticSelector).forEach(initMagneticCard);
+      });
+    });
+  });
+  magneticObserver.observe(document.body, { childList: true, subtree: true });
 };
 
 // 更改正确主题类别
@@ -148,11 +206,16 @@ onMounted(() => {
   window.addEventListener("copy", copyTip);
   // 监听系统颜色
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", changeSiteThemeType);
+  setupMagneticCards();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", calculateScroll);
   window.removeEventListener("contextmenu", openRightMenu);
+  if (magneticObserver) {
+    magneticObserver.disconnect();
+    magneticObserver = null;
+  }
 });
 </script>
 
