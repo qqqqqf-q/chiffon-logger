@@ -137,7 +137,6 @@ export const jumpRedirect = (html, themeConfig, isDom = false) => {
         const $a = $(el);
         const href = $a.attr("href");
         const classesStr = $a.attr("class");
-        const innerText = $a.text();
         // 检查是否包含排除的类
         const classes = classesStr ? classesStr.trim().split(" ") : [];
         if (excludeClass.some((className) => classes.includes(className))) {
@@ -147,19 +146,9 @@ export const jumpRedirect = (html, themeConfig, isDom = false) => {
         if (href && !href.includes(redirectPage)) {
           // Base64 编码 href
           const encodedHref = Buffer.from(href, "utf-8").toString("base64");
-          // 获取所有属性
-          const attributes = el.attribs;
-          // 重构属性字符串，保留原有属性
-          let attributesStr = "";
-          for (let attr in attributes) {
-            if (Object.prototype.hasOwnProperty.call(attributes, attr)) {
-              attributesStr += ` ${attr}="${attributes[attr]}"`;
-            }
-          }
-          // 构造新标签
-          const newLink = `<a href="${redirectPage}?url=${encodedHref}" original-href="${href}" ${attributesStr}>${innerText}</a>`;
-          // 替换原有标签
-          $a.replaceWith(newLink);
+          // 仅更新链接属性，保留内部结构
+          $a.attr("original-href", href);
+          $a.attr("href", `${redirectPage}?url=${encodedHref}`);
         }
       });
       return $.html();
