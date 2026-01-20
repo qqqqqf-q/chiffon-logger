@@ -16,7 +16,7 @@
         <span class="title2">更优秀的作品</span>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 2fr 3fr">
+    <div class="about-content" style="grid-template-columns: 3fr 2.5fr">
       <!-- 技能 -->
       <div class="about-item skills">
         <span class="tip">技能</span>
