@@ -90,13 +90,18 @@ const initMagneticCard = (card) => {
   let currentY = 0;
   let targetX = 0;
   let targetY = 0;
+  const followEase = 0.12;
+  const returnEase = 0.06;
+  const settleThreshold = 0.08;
 
   const update = () => {
-    currentX += (targetX - currentX) * 0.16;
-    currentY += (targetY - currentY) * 0.16;
+    const ease = isActive ? followEase : returnEase;
+    currentX += (targetX - currentX) * ease;
+    currentY += (targetY - currentY) * ease;
     card.style.setProperty("translate", `${currentX}px ${currentY}px`);
     const settled =
-      Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1;
+      Math.abs(targetX - currentX) < settleThreshold &&
+      Math.abs(targetY - currentY) < settleThreshold;
     if (!isActive && settled) {
       currentX = targetX;
       currentY = targetY;
