@@ -56,6 +56,12 @@ const linkData = [
         url: "https://chiyu.it/",
         avatar: "https://chiyu.it/images/logo/logo.webp"
       },
+      {
+        name: "薄荷の小屋",
+        desc: "越是拼命往前伸手，渴望之物越是渐行渐远",
+        url: "https://www.hoshiroko.com",
+        avatar: "https://api.hoshiroko.com/img/avatar.jpg"
+      },
     ],
   },
 ];
