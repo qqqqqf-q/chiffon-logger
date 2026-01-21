@@ -33,6 +33,11 @@
   --main-color-red: #ff3842;
   --main-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
     Cantarell, "Helvetica Neue", sans-serif;
+  --cursor-dot-color: #1f2328;
+  --cursor-dot-outline: rgba(255, 255, 255, 0.75);
+  --cursor-ring-color: rgba(31, 35, 40, 0.18);
+  --cursor-ring-border: rgba(31, 35, 40, 0.35);
+  --cursor-shadow: 0 0 8px rgba(0, 0, 0, 0.22);
 }
 
 html.dark {
@@ -50,6 +55,11 @@ html.dark {
   --main-mask-Inverse-background: rgba(255, 255, 255, 0.08);
   --main-mask-second-background: rgba(0, 0, 0, 0.45);
   --main-color-opacity: rgba(0, 0, 0, 0.15);
+  --cursor-dot-color: #f7f7fa;
+  --cursor-dot-outline: rgba(0, 0, 0, 0.5);
+  --cursor-ring-color: rgba(255, 255, 255, 0.16);
+  --cursor-ring-border: rgba(255, 255, 255, 0.45);
+  --cursor-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
 }
 
 // 字体
@@ -180,14 +190,19 @@ body * {
 .site-cursor.cursor-dot {
   width: 6px;
   height: 6px;
-  background: #fff;
+  background: var(--cursor-dot-color);
+  box-shadow:
+    0 0 0 2px var(--cursor-dot-outline),
+    var(--cursor-shadow);
   border-radius: 50%;
 }
 
 .site-cursor.cursor-ring {
   width: 18px;
   height: 18px;
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--cursor-ring-color);
+  border: 1px solid var(--cursor-ring-border);
+  box-shadow: var(--cursor-shadow);
   border-radius: 50%;
 }
 
