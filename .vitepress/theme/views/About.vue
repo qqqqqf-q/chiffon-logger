@@ -164,8 +164,26 @@
         <span class="text">欢迎提 issue / PR，一起完善。</span>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 3fr 2fr">
+    <div class="about-content" style="grid-template-columns: 2fr 2fr">
       <!-- 硬件 -->
+      <div class="about-item hardware">
+        <span class="tip">服务器</span>
+        <span class="title2">R720xd</span>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="kv-key">CPU</span>
+            <span class="kv-value">E5-2690 v2 @ 3.00GHz ×2</span>
+          </div>
+          <div class="kv-item">
+            <span class="kv-key">内存</span>
+            <span class="kv-value">DDR3 16G ×4</span>
+          </div>
+          <div class="kv-item">
+            <span class="kv-key">硬盘</span>
+            <span class="kv-value">3T SAS ×2</span>
+          </div>
+        </div>
+      </div>
       <div class="about-item hardware">
         <span class="tip">硬件</span>
         <span class="title2">主力 PC</span>
@@ -196,34 +214,8 @@
           </div>
         </div>
       </div>
-      <div class="about-item hardware">
-        <span class="tip">服务器</span>
-        <span class="title2">R720xd</span>
-        <div class="kv-list">
-          <div class="kv-item">
-            <span class="kv-key">CPU</span>
-            <span class="kv-value">E5-2690 v2 @ 3.00GHz ×2</span>
-          </div>
-          <div class="kv-item">
-            <span class="kv-key">内存</span>
-            <span class="kv-value">DDR3 16G ×4</span>
-          </div>
-          <div class="kv-item">
-            <span class="kv-key">硬盘</span>
-            <span class="kv-value">3T SAS ×2</span>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 3fr 2fr">
-      <!-- 哲学 -->
-      <div class="about-item philosophy">
-        <span class="tip">哲学</span>
-        <span class="title2">荒谬 × 现实 × 享乐</span>
-        <p class="text">承认世界没有预设意义，因此选择主动赋予意义。</p>
-        <p class="text">行动上坚持现实主义：用可验证的路径、工具与系统，把欲望落地。</p>
-        <p class="text">享乐不是放纵，而是把当下体验做成作品与记忆。</p>
-      </div>
+    <div class="about-content" style="grid-template-columns: 2fr 3fr">
       <!-- 设备 -->
       <div class="about-item hardware devices">
         <span class="tip">设备</span>
@@ -240,6 +232,14 @@
             <span class="kv-value">一加 13 / 华为 FIT4</span>
           </div>
         </div>
+      </div>
+      <!-- 哲学 -->
+      <div class="about-item philosophy">
+        <span class="tip">哲学</span>
+        <span class="title2">荒谬 × 现实 × 享乐</span>
+        <p class="text">承认世界没有预设意义，因此选择主动赋予意义。</p>
+        <p class="text">行动上坚持现实主义：用可验证的路径、工具与系统，把欲望落地。</p>
+        <p class="text">享乐不是放纵，而是把当下体验做成作品与记忆。</p>
       </div>
     </div>
     <div class="about-content" style="grid-template-columns: 3fr 2fr">
