@@ -17,14 +17,14 @@ import Link from "@/views/Link.vue";
 ### 我的友链信息
 
 - 名称：`清凤小栈`
-- 描述：`QwQ,Kilock For You,怎么都比我搭的好看啊喂！`
+- 描述：`清凤和Kilock的温馨小屋`
 - 地址：`https://清凤.fun`
 - 头像：`https://清凤.fun/images/logo/logo.webp`
 - 订阅：`https://清凤.fun/rss.xml`
 
 ```yml
 name: 清凤小栈
-desc: QwQ,Kilock For You,怎么都比我搭的好看啊喂！
+desc: 清凤和Kilock的温馨小屋
 url: https://清凤.fun
 avatar: https://清凤.fun/images/logo/logo.webp
 rss: https://清凤.fun/rss.xml
