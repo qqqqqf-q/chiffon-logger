@@ -54,13 +54,19 @@ const linkData = [
         name: "池鱼小栈",
         desc: "｜д•´)!!",
         url: "https://chiyu.it/",
-        avatar: "https://chiyu.it/images/logo/logo.webp"
+        avatar: "https://chiyu.it/images/logo/logo.webp",
       },
       {
         name: "薄荷の小屋",
         desc: "越是拼命往前伸手，渴望之物越是渐行渐远",
         url: "https://www.hoshiroko.com",
-        avatar: "https://api.hoshiroko.com/img/avatar.jpg"
+        avatar: "https://api.hoshiroko.com/img/avatar.jpg",
+      },
+      {
+        name: "Shattered217のblog",
+        desc: "白日梦想家~",
+        url: "https://nvcc-v.com",
+        avatar: "https://nvcc-v.com/wp-content/uploads/2026/01/1769071791-250x250nobk.webp",
       },
     ],
   },
