@@ -1,0 +1,25 @@
+---
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'zh-CN' } = Astro.props;
+---
+
+<section class="mt-16 pt-8 border-t border-line max-w-3xl">
+  <h2 class="text-head text-lg font-semibold mb-6">评论</h2>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="qqqqqf-q/qf-blog-comments"
+    data-repo-id="R_kgDOQ9UzXw"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang={lang}
+    crossorigin="anonymous"
+    async
+  ></script>
+</section>

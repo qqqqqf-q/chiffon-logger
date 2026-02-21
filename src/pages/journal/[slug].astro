@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Giscus from '../../components/Giscus.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const formattedDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(post.data.date);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <Header />
+
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <div class="mb-8">
+      <a href="/" class="text-fade text-sm hover:text-dim transition-colors">
+        &larr; 返回日志
+      </a>
+    </div>
+
+    <article>
+      <header class="mb-12 max-w-3xl">
+        {((post.data.tags && post.data.tags.length > 0) || (post.data.categories && post.data.categories.length > 0)) && (
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            {post.data.categories?.map((cat) => (
+              <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+                {cat}
+              </span>
+            ))}
+            {post.data.tags?.map((tag) => (
+              <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <h1 class="text-head text-3xl font-semibold tracking-tight leading-snug mb-4">
+          {post.data.title}
+        </h1>
+
+        <p class="text-body text-base leading-relaxed mb-6">
+          {post.data.description}
+        </p>
+
+        <div class="flex items-center gap-2 text-fade text-sm">
+          <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
+          <span>&middot;</span>
+          <span>清凤</span>
+        </div>
+      </header>
+
+      <hr class="border-line mb-12 max-w-3xl" />
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    <Giscus />
+  </main>
+
+  <Footer />
+</BaseLayout>

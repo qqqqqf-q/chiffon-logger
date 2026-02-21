@@ -1,0 +1,54 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+  categories?: string[];
+  basePath?: string;
+}
+
+const { slug, title, description, date, tags = [], categories = [], basePath = 'journal' } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<a href={`/${basePath}/${slug}`} class="group block">
+  <article
+    class="h-full p-6 bg-card border border-line rounded-lg transition-colors hover:border-line-soft"
+  >
+    {(tags.length > 0 || categories.length > 0) && (
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        {categories.map((cat) => (
+          <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+            {cat}
+          </span>
+        ))}
+        {tags.map((tag) => (
+          <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <h2 class="text-head font-semibold text-base leading-snug mb-2 group-hover:text-body transition-colors">
+      {title}
+    </h2>
+
+    <p class="text-dim text-sm leading-relaxed line-clamp-3 mb-5">
+      {description}
+    </p>
+
+    <div class="flex items-center gap-2 text-fade text-xs mt-auto">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+      <span>&middot;</span>
+      <span>清凤</span>
+    </div>
+  </article>
+</a>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Star 质量分析报告</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #18202a;
+      --sub: #5e6b7a;
+      --line: #d9e1ea;
+      --primary: #005bbb;
+      --danger: #c9412a;
+      --ok: #157347;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #eef3f9 0%, #f8fafc 100%);
+      color: var(--text);
+      padding: 28px 20px 48px;
+    }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .title { font-size: 30px; font-weight: 700; margin: 0; letter-spacing: 0.4px; }
+    .sub { color: var(--sub); margin-top: 6px; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 6px 22px rgba(24, 32, 42, 0.04);
+    }
+    .metric-k { color: var(--sub); font-size: 13px; margin: 0; }
+    .metric-v { margin: 8px 0 0; font-size: 28px; font-weight: 700; }
+    .metric-note { margin: 8px 0 0; color: var(--sub); font-size: 12px; }
+    h2 {
+      margin: 28px 0 12px;
+      font-size: 20px;
+      border-left: 4px solid var(--primary);
+      padding-left: 10px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 6px 22px rgba(24, 32, 42, 0.04);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f7f9fb;
+      font-weight: 600;
+      color: #304154;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .table-wrap {
+      max-height: 440px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+    .bar {
+      height: 10px;
+      background: #e8eef5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar > span {
+      display: block;
+      height: 10px;
+      background: linear-gradient(90deg, #0070d9, #00a0d2);
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: #f7f9fc;
+    }
+    .danger { color: var(--danger); }
+    .ok { color: var(--ok); }
+    .mono { font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+    .logic li { margin: 6px 0; }
+    .warn {
+      border: 1px solid #f1d0cb;
+      background: #fff7f5;
+      color: #7a2f25;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+<h1 class="title">Star 质量分析报告</h1><div class="sub">仓库：<span class="mono">qqqqqf-q/MirrorFlow</span>；生成时间：2026-02-15 15:20:44 UTC</div><div class="grid"><div class="card"><p class="metric-k">总 Star 用户</p><p class="metric-v">55</p><p class="metric-note"></p></div><div class="card"><p class="metric-k">用户平均质量分</p><p class="metric-v">53.18</p><p class="metric-note">满分 100</p></div><div class="card"><p class="metric-k">Water Ratio（加权）</p><p class="metric-v">50.18%</p><p class="metric-note">越高表示可疑水分越高</p></div><div class="card"><p class="metric-k">可疑占比（E 级）</p><p class="metric-v">14.55%</p><p class="metric-note">仅统计 E 级用户</p></div><div class="card"><p class="metric-k">高质量占比（A/B）</p><p class="metric-v">21.82%</p><p class="metric-note">高于 65 分</p></div><div class="card"><p class="metric-k">估算净质量比例</p><p class="metric-v">49.82%</p><p class="metric-note">100% - Water Ratio</p></div></div><h2>User Quality</h2><div class="panel"><p class="sub">等级分层与分项均值可用于判断用户总体质量结构。</p><table><thead><tr><th>等级</th><th>人数</th><th>占比</th><th>条形图</th></tr></thead><tbody><tr><td><span class="badge">A</span></td><td>7</td><td>12.73%</td><td><div class="bar"><span style="width:12.73%"></span></div></td></tr><tr><td><span class="badge">B</span></td><td>5</td><td>9.09%</td><td><div class="bar"><span style="width:9.09%"></span></div></td></tr><tr><td><span class="badge">C</span></td><td>20</td><td>36.36%</td><td><div class="bar"><span style="width:36.36%"></span></div></td></tr><tr><td><span class="badge">D</span></td><td>15</td><td>27.27%</td><td><div class="bar"><span style="width:27.27%"></span></div></td></tr><tr><td><span class="badge">E</span></td><td>8</td><td>14.55%</td><td><div class="bar"><span style="width:14.55%"></span></div></td></tr></tbody></table><table><thead><tr><th>分项</th><th>均分</th><th>说明</th></tr></thead><tbody><tr><td>账号年龄</td><td>18.18</td><td>账号越老通常越稳定。</td></tr><tr><td>活跃度</td><td>13.93</td><td>近一年贡献越多得分越高。</td></tr><tr><td>开发足迹</td><td>9.96</td><td>公开仓库、gist、pinned 共同衡量产出。</td></tr><tr><td>社交信号</td><td>3.82</td><td>followers 规模与关注比作为弱信号。</td></tr><tr><td>资料完整度</td><td>2.53</td><td>资料字段越完善，可信度通常越高。</td></tr><tr><td>Star 时机</td><td>4.76</td><td>注册后很快 star 的账号得分更低。</td></tr></tbody></table></div><h2>Star 曲线图</h2><div class="panel"><p class="sub">曲线为累计 Star 数随时间变化，便于识别突增和增长节奏。</p><svg viewBox="0 0 940 300" width="100%" height="300" role="img" aria-label="Star 累计曲线">
+  <defs>
+    <linearGradient id="curveFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0c77d8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0c77d8" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="940" height="300" fill="#f9fbfd" rx="10" />
+  <line x1="36" y1="36" x2="36" y2="264" stroke="#b9c6d7" stroke-width="1"/>
+  <line x1="36" y1="264" x2="904" y2="264" stroke="#b9c6d7" stroke-width="1"/>
+  <path d="M 36.00 264.00 L 36.00 255.71 L 61.53 247.42 L 87.06 243.27 L 112.59 239.13 L 138.12 234.98 L 163.65 230.84 L 189.18 205.96 L 214.71 201.82 L 240.24 197.67 L 265.76 181.09 L 291.29 176.95 L 316.82 172.80 L 342.35 168.65 L 367.88 164.51 L 393.41 160.36 L 418.94 156.22 L 444.47 152.07 L 470.00 147.93 L 495.53 143.78 L 521.06 139.64 L 546.59 131.35 L 572.12 127.20 L 597.65 123.05 L 623.18 118.91 L 648.71 114.76 L 674.24 110.62 L 699.76 106.47 L 725.29 98.18 L 750.82 60.87 L 776.35 56.73 L 801.88 52.58 L 827.41 48.44 L 852.94 44.29 L 878.47 40.15 L 904.00 36.00 L 904.00 264.00 Z" fill="url(#curveFill)"/>
+  <polyline points="36.00,255.71 61.53,247.42 87.06,243.27 112.59,239.13 138.12,234.98 163.65,230.84 189.18,205.96 214.71,201.82 240.24,197.67 265.76,181.09 291.29,176.95 316.82,172.80 342.35,168.65 367.88,164.51 393.41,160.36 418.94,156.22 444.47,152.07 470.00,147.93 495.53,143.78 521.06,139.64 546.59,131.35 572.12,127.20 597.65,123.05 623.18,118.91 648.71,114.76 674.24,110.62 699.76,106.47 725.29,98.18 750.82,60.87 776.35,56.73 801.88,52.58 827.41,48.44 852.94,44.29 878.47,40.15 904.00,36.00" fill="none" stroke="#0c77d8" stroke-width="2.2"/>
+  <text x="36" y="28" font-size="11" fill="#526174">55</text>
+  <text x="36" y="278" font-size="11" fill="#526174">0</text>
+  <text x="36" y="292" font-size="11" fill="#526174">2025-08-03</text>
+  <text x="904" y="292" text-anchor="end" font-size="11" fill="#526174">2026-02-15</text>
+</svg><p class="sub">起始日期：2025-08-03；结束日期：2026-02-15；覆盖天数：35 天。</p><table><thead><tr><th>高峰日期</th><th>当天新增 Star</th><th>累计 Star</th></tr></thead><tbody><tr><td>2026-01-20</td><td>9</td><td>49</td></tr><tr><td>2025-08-16</td><td>6</td><td>14</td></tr><tr><td>2025-09-02</td><td>4</td><td>20</td></tr><tr><td>2026-01-19</td><td>2</td><td>40</td></tr><tr><td>2025-11-03</td><td>2</td><td>32</td></tr><tr><td>2025-08-05</td><td>2</td><td>4</td></tr><tr><td>2025-08-03</td><td>2</td><td>2</td></tr><tr><td>2026-02-15</td><td>1</td><td>55</td></tr><tr><td>2026-02-11</td><td>1</td><td>54</td></tr><tr><td>2026-02-02</td><td>1</td><td>53</td></tr></tbody></table></div><h2>仓库评分（Pinned 维度）</h2><div class="panel"><p class="sub">基于 stargazers 的 pinned 仓库聚合得分，用于观察用户群体偏好的仓库质量。</p><div class="table-wrap"><table><thead><tr><th>仓库</th><th>分数</th><th>出现用户数</th><th>平均 Star</th><th>平均 Fork</th><th>总 Star</th><th>总 Fork</th><th>描述覆盖率</th></tr></thead><tbody><tr><td>langchain</td><td>96</td><td>1</td><td>126694.0</td><td>20844.0</td><td>126694</td><td>20844</td><td>100.00%</td></tr><tr><td>awesome-llm-apps</td><td>94</td><td>1</td><td>95147.0</td><td>13785.0</td><td>95147</td><td>13785</td><td>100.00%</td></tr><tr><td>WeClone</td><td>79</td><td>1</td><td>16337.0</td><td>1329.0</td><td>16337</td><td>1329</td><td>100.00%</td></tr><tr><td>meteor-client</td><td>73</td><td>1</td><td>3243.0</td><td>1335.0</td><td>3243</td><td>1335</td><td>100.00%</td></tr><tr><td>PyCINRAD</td><td>58</td><td>1</td><td>418.0</td><td>167.0</td><td>418</td><td>167</td><td>100.00%</td></tr><tr><td>MirrorFlow</td><td>43</td><td>1</td><td>55.0</td><td>19.0</td><td>55</td><td>19</td><td>100.00%</td></tr><tr><td>micaps_mdfs</td><td>42</td><td>1</td><td>36.0</td><td>18.0</td><td>36</td><td>18</td><td>100.00%</td></tr><tr><td>aioqzone</td><td>41</td><td>1</td><td>51.0</td><td>10.0</td><td>51</td><td>10</td><td>100.00%</td></tr><tr><td>TOTP-Generator-Web</td><td>41</td><td>1</td><td>30.0</td><td>22.0</td><td>30</td><td>22</td><td>100.00%</td></tr><tr><td>witch</td><td>36</td><td>1</td><td>23.0</td><td>4.0</td><td>23</td><td>4</td><td>100.00%</td></tr><tr><td>WeClone-docs</td><td>35</td><td>2</td><td>9.0</td><td>2.0</td><td>18</td><td>4</td><td>100.00%</td></tr><tr><td>LifeBook</td><td>35</td><td>1</td><td>65.0</td><td>0.0</td><td>65</td><td>0</td><td>100.00%</td></tr><tr><td>XTC-ThemePro</td><td>33</td><td>1</td><td>21.0</td><td>1.0</td><td>21</td><td>1</td><td>100.00%</td></tr><tr><td>HorcruxCollegeExtract</td><td>31</td><td>1</td><td>11.0</td><td>2.0</td><td>11</td><td>2</td><td>100.00%</td></tr><tr><td>RemSend</td><td>31</td><td>1</td><td>9.0</td><td>2.0</td><td>9</td><td>2</td><td>100.00%</td></tr><tr><td>PicNezha</td><td>31</td><td>1</td><td>6.0</td><td>4.0</td><td>6</td><td>4</td><td>100.00%</td></tr><tr><td>DailyNotes-CE</td><td>30</td><td>1</td><td>6.0</td><td>3.0</td><td>6</td><td>3</td><td>100.00%</td></tr><tr><td>tdengine-playground</td><td>28</td><td>1</td><td>4.0</td><td>2.0</td><td>4</td><td>2</td><td>100.00%</td></tr><tr><td>DailyNotes-V3</td><td>27</td><td>1</td><td>8.0</td><td>0.0</td><td>8</td><td>0</td><td>100.00%</td></tr><tr><td>skye</td><td>26</td><td>1</td><td>3.0</td><td>1.0</td><td>3</td><td>1</td><td>100.00%</td></tr><tr><td>NanoTrans</td><td>25</td><td>1</td><td>5.0</td><td>0.0</td><td>5</td><td>0</td><td>100.00%</td></tr><tr><td>Oxidarb</td><td>25</td><td>1</td><td>5.0</td><td>0.0</td><td>5</td><td>0</td><td>100.00%</td></tr><tr><td>Fast-EasiLogin</td><td>24</td><td>1</td><td>3.0</td><td>0.0</td><td>3</td><td>0</td><td>100.00%</td></tr><tr><td>unicode-hovery</td><td>24</td><td>1</td><td>3.0</td><td>0.0</td><td>3</td><td>0</td><td>100.00%</td></tr><tr><td>eccodes-windows-build</td><td>23</td><td>1</td><td>1.0</td><td>1.0</td><td>1</td><td>1</td><td>100.00%</td></tr><tr><td>BotAdmin</td><td>22</td><td>1</td><td>2.0</td><td>0.0</td><td>2</td><td>0</td><td>100.00%</td></tr><tr><td>SmartDiet</td><td>22</td><td>1</td><td>2.0</td><td>0.0</td><td>2</td><td>0</td><td>100.00%</td></tr><tr><td>vibe_pygo</td><td>22</td><td>1</td><td>2.0</td><td>0.0</td><td>2</td><td>0</td><td>100.00%</td></tr><tr><td>SliderSolver</td><td>21</td><td>1</td><td>1.0</td><td>0.0</td><td>1</td><td>0</td><td>100.00%</td></tr><tr><td>ZionChat</td><td>21</td><td>1</td><td>1.0</td><td>0.0</td><td>1</td><td>0</td><td>100.00%</td></tr></tbody></table></div></div><h2>计算逻辑</h2><div class="panel"><ul class="logic"><li><strong>User Quality 总分（0-100）</strong>：账号年龄(20) + 活跃度(30) + 开发足迹(20) + 社交信号(15) + 资料完整度(10) + Star 时机(5)。</li><li><strong>活跃度分</strong>：对 <span class="mono">contrib_total_1y</span> 使用对数归一化，避免头部账号对均值造成畸变。</li><li><strong>仓库评分</strong>：用户覆盖度(35) + 平均 Star(35) + 平均 Fork(20) + 描述覆盖率(10)，最终映射到 0-100。</li><li><strong>Water Ratio</strong>：按用户等级加权估算可疑水分。权重：A=0.05、B=0.15、C=0.40、D=0.70、E=1.00。</li><li><strong>可疑占比</strong>：仅计算 E 级用户在总用户中的比例，作为最严格的风险口径。</li></ul></div><h2>详细数据</h2><div class="panel"><p class="sub">当前用户量不大，展示高风险与高质量样本便于人工复核。</p><h3>高风险用户（按质量分升序）</h3><div class="table-wrap"><table><thead><tr><th>用户</th><th>总分</th><th>等级</th><th>近一年贡献</th><th>followers</th><th>公开仓库</th><th>days_to_star</th></tr></thead><tbody><tr><td>chuchen97</td><td class="danger">13</td><td>E</td><td>1</td><td>0</td><td>0</td><td>72</td></tr><tr><td>lzh-35</td><td class="danger">13</td><td>E</td><td>2</td><td>0</td><td>1</td><td>2</td></tr><tr><td>asdqxe</td><td class="danger">18</td><td>E</td><td>2</td><td>0</td><td>1</td><td>45</td></tr><tr><td>CPotatoShreds</td><td class="danger">25</td><td>E</td><td>2</td><td>1</td><td>0</td><td>223</td></tr><tr><td>phosnow</td><td class="danger">26</td><td>E</td><td>0</td><td>1</td><td>0</td><td>1920</td></tr><tr><td>6457624746877</td><td class="danger">32</td><td>E</td><td>1</td><td>0</td><td>2</td><td>927</td></tr><tr><td>rahulsaipandit</td><td class="danger">33</td><td>E</td><td>0</td><td>0</td><td>18</td><td>946</td></tr><tr><td>boy516</td><td class="danger">34</td><td>E</td><td>0</td><td>0</td><td>11</td><td>3134</td></tr><tr><td>rruunning</td><td class="danger">35</td><td>D</td><td>13</td><td>0</td><td>1</td><td>451</td></tr><tr><td>asnidea</td><td class="danger">37</td><td>D</td><td>0</td><td>6</td><td>3</td><td>5293</td></tr><tr><td>llnewbee</td><td class="danger">39</td><td>D</td><td>9</td><td>0</td><td>1</td><td>993</td></tr><tr><td>flyxyz123</td><td class="danger">40</td><td>D</td><td>0</td><td>0</td><td>23</td><td>2962</td></tr><tr><td>duanqihui</td><td class="danger">40</td><td>D</td><td>3</td><td>0</td><td>9</td><td>1296</td></tr><tr><td>yosinly</td><td class="danger">40</td><td>D</td><td>9</td><td>0</td><td>10</td><td>903</td></tr><tr><td>qinsg</td><td class="danger">43</td><td>D</td><td>0</td><td>0</td><td>83</td><td>4295</td></tr><tr><td>L3030</td><td class="danger">43</td><td>D</td><td>1</td><td>4</td><td>7</td><td>1805</td></tr><tr><td>DaVinci0815</td><td class="danger">43</td><td>D</td><td>3</td><td>4</td><td>8</td><td>2700</td></tr><tr><td>bigsam223</td><td class="danger">44</td><td>D</td><td>6</td><td>0</td><td>17</td><td>1415</td></tr><tr><td>qeshgff</td><td class="danger">44</td><td>D</td><td>29</td><td>0</td><td>9</td><td>678</td></tr><tr><td>acu715</td><td class="danger">46</td><td>D</td><td>19</td><td>0</td><td>6</td><td>1258</td></tr><tr><td>king0929zion</td><td class="danger">48</td><td>D</td><td>118</td><td>1</td><td>45</td><td>102</td></tr><tr><td>K23Flux</td><td class="danger">49</td><td>D</td><td>26</td><td>1</td><td>4</td><td>2094</td></tr><tr><td>ADALIY1</td><td class="danger">49</td><td>D</td><td>214</td><td>0</td><td>6</td><td>344</td></tr><tr><td>BZCCY520</td><td class="danger">50</td><td>C</td><td>8</td><td>2</td><td>14</td><td>1273</td></tr><tr><td>peekair</td><td class="danger">51</td><td>C</td><td>3</td><td>11</td><td>45</td><td>4229</td></tr><tr><td>maxbole</td><td class="danger">52</td><td>C</td><td>11</td><td>2</td><td>25</td><td>1483</td></tr><tr><td>acnekot</td><td class="danger">52</td><td>C</td><td>22</td><td>7</td><td>3</td><td>1404</td></tr><tr><td>Auuassq</td><td class="danger">53</td><td>C</td><td>49</td><td>1</td><td>46</td><td>441</td></tr><tr><td>ElonJask</td><td class="danger">53</td><td>C</td><td>607</td><td>0</td><td>1</td><td>163</td></tr><tr><td>YIN95</td><td class="danger">54</td><td>C</td><td>12</td><td>25</td><td>37</td><td>2839</td></tr><tr><td>Olive1117</td><td class="danger">55</td><td>C</td><td>80</td><td>2</td><td>7</td><td>1118</td></tr><tr><td>lucaxin</td><td class="danger">56</td><td>C</td><td>6</td><td>7</td><td>22</td><td>2806</td></tr><tr><td>KarasumaChitos3</td><td class="danger">56</td><td>C</td><td>16</td><td>2</td><td>21</td><td>2312</td></tr><tr><td>ccdos</td><td class="danger">57</td><td>C</td><td>12</td><td>50</td><td>214</td><td>5328</td></tr><tr><td>kilockok</td><td class="danger">57</td><td>C</td><td>60</td><td>6</td><td>8</td><td>304</td></tr><tr><td>weiyuli20</td><td class="danger">57</td><td>C</td><td>85</td><td>0</td><td>16</td><td>1876</td></tr><tr><td>brlanweb</td><td class="danger">58</td><td>C</td><td>17</td><td>4</td><td>28</td><td>1108</td></tr><tr><td>miaowmint</td><td class="danger">58</td><td>C</td><td>23</td><td>7</td><td>18</td><td>2085</td></tr><tr><td>Huramkin</td><td class="danger">59</td><td>C</td><td>18</td><td>16</td><td>8</td><td>3165</td></tr><tr><td>sniperrich</td><td class="danger">60</td><td>C</td><td>26</td><td>4</td><td>16</td><td>1171</td></tr></tbody></table></div><h3>高质量用户（按质量分降序）</h3><div class="table-wrap"><table><thead><tr><th>用户</th><th>总分</th><th>等级</th><th>近一年贡献</th><th>followers</th><th>公开仓库</th><th>days_to_star</th></tr></thead><tbody><tr><td>qqqqqf-q</td><td class="ok">89</td><td>A</td><td>781</td><td>44</td><td>23</td><td>1197</td></tr><tr><td>xming521</td><td class="ok">89</td><td>A</td><td>702</td><td>292</td><td>37</td><td>2871</td></tr><tr><td>HikaruQwQ</td><td class="ok">88</td><td>A</td><td>1090</td><td>50</td><td>29</td><td>1221</td></tr><tr><td>baiyao105</td><td class="ok">87</td><td>A</td><td>1095</td><td>26</td><td>21</td><td>995</td></tr><tr><td>SkyAerope</td><td class="ok">86</td><td>A</td><td>973</td><td>29</td><td>54</td><td>1594</td></tr><tr><td>hexadecimal233</td><td class="ok">85</td><td>A</td><td>357</td><td>182</td><td>84</td><td>1975</td></tr><tr><td>NewYaroslav</td><td class="ok">83</td><td>A</td><td>2560</td><td>104</td><td>176</td><td>3364</td></tr><tr><td>it985</td><td class="ok">78</td><td>B</td><td>107</td><td>54</td><td>20</td><td>1992</td></tr><tr><td>CyanideCN</td><td class="ok">78</td><td>B</td><td>73</td><td>143</td><td>27</td><td>2618</td></tr><tr><td>AaaRynt</td><td class="ok">69</td><td>B</td><td>392</td><td>1</td><td>12</td><td>1105</td></tr><tr><td>code-with-Anson</td><td class="ok">67</td><td>B</td><td>359</td><td>6</td><td>4</td><td>1325</td></tr><tr><td>FantajiNeko</td><td class="ok">67</td><td>B</td><td>76</td><td>8</td><td>46</td><td>3646</td></tr><tr><td>nightcovers</td><td class="ok">64</td><td>C</td><td>146</td><td>5</td><td>15</td><td>2581</td></tr><tr><td>carsonmoon</td><td class="ok">62</td><td>C</td><td>37</td><td>8</td><td>26</td><td>3367</td></tr><tr><td>imatrixme</td><td class="ok">61</td><td>C</td><td>38</td><td>20</td><td>196</td><td>3319</td></tr><tr><td>sniperrich</td><td class="ok">60</td><td>C</td><td>26</td><td>4</td><td>16</td><td>1171</td></tr><tr><td>Huramkin</td><td class="ok">59</td><td>C</td><td>18</td><td>16</td><td>8</td><td>3165</td></tr><tr><td>miaowmint</td><td class="ok">58</td><td>C</td><td>23</td><td>7</td><td>18</td><td>2085</td></tr><tr><td>brlanweb</td><td class="ok">58</td><td>C</td><td>17</td><td>4</td><td>28</td><td>1108</td></tr><tr><td>weiyuli20</td><td class="ok">57</td><td>C</td><td>85</td><td>0</td><td>16</td><td>1876</td></tr><tr><td>kilockok</td><td class="ok">57</td><td>C</td><td>60</td><td>6</td><td>8</td><td>304</td></tr><tr><td>ccdos</td><td class="ok">57</td><td>C</td><td>12</td><td>50</td><td>214</td><td>5328</td></tr><tr><td>KarasumaChitos3</td><td class="ok">56</td><td>C</td><td>16</td><td>2</td><td>21</td><td>2312</td></tr><tr><td>lucaxin</td><td class="ok">56</td><td>C</td><td>6</td><td>7</td><td>22</td><td>2806</td></tr><tr><td>Olive1117</td><td class="ok">55</td><td>C</td><td>80</td><td>2</td><td>7</td><td>1118</td></tr><tr><td>YIN95</td><td class="ok">54</td><td>C</td><td>12</td><td>25</td><td>37</td><td>2839</td></tr><tr><td>ElonJask</td><td class="ok">53</td><td>C</td><td>607</td><td>0</td><td>1</td><td>163</td></tr><tr><td>Auuassq</td><td class="ok">53</td><td>C</td><td>49</td><td>1</td><td>46</td><td>441</td></tr><tr><td>acnekot</td><td class="ok">52</td><td>C</td><td>22</td><td>7</td><td>3</td><td>1404</td></tr><tr><td>maxbole</td><td class="ok">52</td><td>C</td><td>11</td><td>2</td><td>25</td><td>1483</td></tr><tr><td>peekair</td><td class="ok">51</td><td>C</td><td>3</td><td>11</td><td>45</td><td>4229</td></tr><tr><td>BZCCY520</td><td class="ok">50</td><td>C</td><td>8</td><td>2</td><td>14</td><td>1273</td></tr><tr><td>ADALIY1</td><td class="ok">49</td><td>D</td><td>214</td><td>0</td><td>6</td><td>344</td></tr><tr><td>K23Flux</td><td class="ok">49</td><td>D</td><td>26</td><td>1</td><td>4</td><td>2094</td></tr><tr><td>king0929zion</td><td class="ok">48</td><td>D</td><td>118</td><td>1</td><td>45</td><td>102</td></tr><tr><td>acu715</td><td class="ok">46</td><td>D</td><td>19</td><td>0</td><td>6</td><td>1258</td></tr><tr><td>qeshgff</td><td class="ok">44</td><td>D</td><td>29</td><td>0</td><td>9</td><td>678</td></tr><tr><td>bigsam223</td><td class="ok">44</td><td>D</td><td>6</td><td>0</td><td>17</td><td>1415</td></tr><tr><td>DaVinci0815</td><td class="ok">43</td><td>D</td><td>3</td><td>4</td><td>8</td><td>2700</td></tr><tr><td>L3030</td><td class="ok">43</td><td>D</td><td>1</td><td>4</td><td>7</td><td>1805</td></tr></tbody></table></div></div></div></body></html>

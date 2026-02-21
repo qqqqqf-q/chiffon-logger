@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* ── Design tokens ── */
+:root {
+  --c-bg-page: #1c1c1a;
+  --c-bg-card: #222220;
+  --c-bg-deep: #141413;
+  --c-bg-sub: #1e1e1c;
+  --c-bg-chip: #2a2a28;
+  --c-border: #40403d;
+  --c-border-soft: #3a3a38;
+  --c-text-head: #e8e8e3;
+  --c-text-body: #c2c0b6;
+  --c-text-sub: #9c9a92;
+  --c-text-fade: #6b6b68;
+  --c-scrollbar: #40403d;
+  --c-scrollbar-hover: #5e5e5c;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --c-bg-page: #F8F8F7;
+    --c-bg-card: #FFFFFF;
+    --c-bg-deep: #EBEBEB;
+    --c-bg-sub: #F0F0EE;
+    --c-bg-chip: #EBEBEB;
+    --c-border: #B9B9B7;
+    --c-border-soft: #DEDEDE;
+    --c-text-head: #1A1A18;
+    --c-text-body: #3D3D3B;
+    --c-text-sub: #6B6B68;
+    --c-text-fade: #8C8C8A;
+    --c-scrollbar: #B9B9B7;
+    --c-scrollbar-hover: #9A9A98;
+  }
+}
+
+@theme inline {
+  --color-surface: var(--c-bg-page);
+  --color-card: var(--c-bg-card);
+  --color-deep: var(--c-bg-deep);
+  --color-sub: var(--c-bg-sub);
+  --color-chip: var(--c-bg-chip);
+  --color-line: var(--c-border);
+  --color-line-soft: var(--c-border-soft);
+  --color-head: var(--c-text-head);
+  --color-body: var(--c-text-body);
+  --color-dim: var(--c-text-sub);
+  --color-fade: var(--c-text-fade);
+}
+
+@layer base {
+  html {
+    background: var(--c-bg-page);
+    color: var(--c-text-body);
+    font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--c-scrollbar);
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--c-scrollbar-hover);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-scrollbar) transparent;
+  }
+}
+
+/* ── Prose ── */
+.prose {
+  color: var(--c-text-body);
+  max-width: 68ch;
+  line-height: 1.8;
+  font-size: 1.0625rem;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: var(--c-text-head);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h1 { font-size: 1.875rem; margin-top: 0; }
+.prose h2 { font-size: 1.5rem; }
+.prose h3 { font-size: 1.25rem; }
+.prose h4 { font-size: 1.1rem; }
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose a {
+  color: var(--c-text-head);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--c-border);
+  transition: text-decoration-color 0.15s;
+}
+
+.prose a:hover {
+  text-decoration-color: var(--c-text-head);
+}
+
+.prose strong {
+  color: var(--c-text-head);
+  font-weight: 600;
+}
+
+.prose code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--c-bg-sub);
+  border: 1px solid var(--c-border-soft);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.prose pre {
+  background: var(--c-bg-deep) !important;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.prose blockquote {
+  border-left: 2px solid var(--c-border);
+  padding-left: 1.25rem;
+  color: var(--c-text-sub);
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose li {
+  margin-bottom: 0.4rem;
+}
+
+.prose ul li { list-style-type: disc; }
+.prose ol li { list-style-type: decimal; }
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  margin: 3rem 0;
+}
+
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.prose th {
+  border-bottom: 1px solid var(--c-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--c-text-head);
+}
+
+.prose td {
+  border-bottom: 1px solid var(--c-border-soft);
+  padding: 0.5rem 0.75rem;
+}
+
+/* ── Iframe embed ── */
+.report-frame {
+  width: 100%;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}

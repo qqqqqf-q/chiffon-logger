@@ -1,0 +1,28 @@
+---
+const currentPath = Astro.url.pathname;
+
+const isActive = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md">
+  <div class="mx-auto max-w-5xl px-6 flex items-center justify-between h-14">
+    <a href="/" class="text-head font-semibold text-sm tracking-widest">
+      清凤小栈
+    </a>
+    <nav class="flex items-center gap-6">
+      <a
+        href="/"
+        class={`text-sm transition-colors ${isActive('/') ? 'text-head' : 'text-dim hover:text-body'}`}
+      >
+        日志
+      </a>
+      <a
+        href="/about"
+        class={`text-sm transition-colors ${isActive('/about') ? 'text-head' : 'text-dim hover:text-body'}`}
+      >
+        关于
+      </a>
+    </nav>
+  </div>
+</header>

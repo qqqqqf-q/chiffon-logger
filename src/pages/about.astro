@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="关于" description="关于清凤">
+  <Header />
+
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <div class="max-w-2xl">
+      <div class="flex items-center gap-6 mb-10">
+        <img
+          src="/images/logo/logo.webp"
+          alt="清凤"
+          class="w-20 h-20 rounded-full border border-line"
+        />
+        <div>
+          <h1 class="text-head text-2xl font-semibold mb-1">清凤</h1>
+          <p class="text-dim text-sm">你的指尖,拥有改变世界的力量（大概吧）</p>
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>
+          一个喜欢折腾技术的人。对 AI、开源项目和独立开发有浓厚兴趣。
+          目前主要在用 Claude Code 和 Codex 做各种项目。
+        </p>
+      </div>
+
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a
+          href="https://github.com/qqqqqf-q"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-dim text-sm hover:text-head transition-colors"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://x.com/qqqqqf5"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-dim text-sm hover:text-head transition-colors"
+        >
+          X / Twitter
+        </a>
+        <a
+          href="https://t.me/qqqqqf5"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-dim text-sm hover:text-head transition-colors"
+        >
+          Telegram
+        </a>
+        <a
+          href="mailto:qingf622@outlook.com"
+          class="text-dim text-sm hover:text-head transition-colors"
+        >
+          Email
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
