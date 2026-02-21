@@ -18,6 +18,12 @@ const isActive = (href: string) =>
         日志
       </a>
       <a
+        href="/links"
+        class={`text-sm transition-colors ${isActive('/links') ? 'text-head' : 'text-dim hover:text-body'}`}
+      >
+        友链
+      </a>
+      <a
         href="/about"
         class={`text-sm transition-colors ${isActive('/about') ? 'text-head' : 'text-dim hover:text-body'}`}
       >

@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Giscus from '../components/Giscus.astro';
+
+const friends = [
+  {
+    name: "池鱼小栈",
+    desc: "｜д•´)!!",
+    url: "https://chiyu.it/",
+    avatar: "https://chiyu.it/images/logo/logo.webp",
+  },
+  {
+    name: "薄荷の小屋",
+    desc: "越是拼命往前伸手，渴望之物越是渐行渐远",
+    url: "https://www.hoshiroko.com",
+    avatar: "https://api.hoshiroko.com/img/avatar.jpg",
+  },
+  {
+    name: "Shattered217のblog",
+    desc: "白日梦想家~",
+    url: "https://nvcc-v.com",
+    avatar: "https://nvcc-v.com/wp-content/uploads/2026/01/1769071791-250x250nobk.webp",
+  },
+  {
+    name: "御坂晚的笨蛋笔记",
+    desc: "这里什么都没有呢",
+    url: "https://starneko.com/",
+    avatar: "https://starneko.com/img/Mahiro.jpg",
+  },
+  {
+    name: "朝夕见闻志",
+    desc: "又一个博客",
+    url: "https://jintaoblog.com",
+    avatar: "https://jintaoblog.com/share/jintaoblog-avatar.png",
+  },
+];
+
+const myInfo = {
+  name: "清凤小栈",
+  desc: "清凤和Kilock的温馨小屋",
+  url: "https://清凤.fun",
+  avatar: "https://清凤.fun/images/logo/logo.webp",
+  rss: "https://清凤.fun/rss.xml",
+};
+---
+
+<BaseLayout title="友链" description="友情链接">
+  <Header />
+
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <header class="mb-14">
+      <h1 class="text-head text-3xl font-semibold tracking-tight mb-3">友情链接</h1>
+      <p class="text-dim text-base max-w-xl">
+        小伙伴们 — 我们在一起，共同进步
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+      {friends.map((friend) => (
+        <a
+          href={friend.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center gap-4 p-5 bg-card border border-line rounded-lg transition-colors hover:border-line-soft"
+        >
+          <img
+            src={friend.avatar}
+            alt={friend.name}
+            class="w-12 h-12 rounded-full object-cover border border-line shrink-0"
+            loading="lazy"
+          />
+          <div class="min-w-0">
+            <h2 class="text-head text-sm font-semibold truncate group-hover:text-body transition-colors">
+              {friend.name}
+            </h2>
+            <p class="text-dim text-xs mt-0.5 line-clamp-2">
+              {friend.desc}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="max-w-2xl">
+      <h2 class="text-head text-xl font-semibold mb-6">友链申请</h2>
+
+      <div class="prose mb-8">
+        <p>
+          很高兴能和各位优秀的朋友们交流，本站友链目前采用<strong>手动添加</strong>，如果你想加入友链，可以在下方留言。
+        </p>
+      </div>
+
+      <div class="p-5 bg-card border border-line rounded-lg mb-8">
+        <h3 class="text-head text-sm font-semibold mb-3">我的友链信息</h3>
+        <div class="space-y-1.5 text-sm">
+          <div class="flex gap-2">
+            <span class="text-fade w-12 shrink-0">名称</span>
+            <code class="text-body text-xs bg-sub px-2 py-0.5 rounded">{myInfo.name}</code>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-fade w-12 shrink-0">描述</span>
+            <code class="text-body text-xs bg-sub px-2 py-0.5 rounded">{myInfo.desc}</code>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-fade w-12 shrink-0">地址</span>
+            <code class="text-body text-xs bg-sub px-2 py-0.5 rounded">{myInfo.url}</code>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-fade w-12 shrink-0">头像</span>
+            <code class="text-body text-xs bg-sub px-2 py-0.5 rounded break-all">{myInfo.avatar}</code>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-fade w-12 shrink-0">订阅</span>
+            <code class="text-body text-xs bg-sub px-2 py-0.5 rounded">{myInfo.rss}</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="prose text-sm">
+        <ul>
+          <li>我已添加 <a href="https://清凤.fun">清凤小栈</a> 的友情链接。</li>
+          <li>本站不添加采集站、纯搬运站点、论坛类站点等非个人博客类型的站点。</li>
+          <li>站点目前可以在中国大陆区域正常访问。</li>
+          <li>网站内容符合中国大陆法律法规。</li>
+        </ul>
+        <blockquote>
+          若申请时或日后有违反上述规定的站点，博主有权自行删除且不进行通知！
+        </blockquote>
+      </div>
+
+      <Giscus />
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
