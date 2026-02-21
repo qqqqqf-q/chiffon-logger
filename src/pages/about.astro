@@ -2,6 +2,27 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const projects = [
+  {
+    name: "MirrorFlow",
+    desc: "用 C2C 聊天记录微调大模型，还原你的表达风格。",
+    tags: "LLM · 微调 · 数字分身",
+    link: "https://github.com/qqqqqf-q/MirrorFlow",
+  },
+  {
+    name: "NanoTrans",
+    desc: "跨平台极致轻量输入翻译助手，即时翻译与原地回填。",
+    tags: "Windows · macOS · 翻译",
+    link: "https://github.com/qqqqqf-q/NanoTrans",
+  },
+  {
+    name: "Oxidarb",
+    desc: "基于 Rust 的自动三角套利程序，10.0µs 单次循环。",
+    tags: "Rust · 量化 · 套利",
+    link: "https://github.com/Arkilo-Labs/Oxidarb",
+  },
+];
 ---
 
 <BaseLayout title="关于" description="关于清凤和这个小站">
@@ -9,6 +30,7 @@ import Footer from '../components/Footer.astro';
 
   <main class="mx-auto max-w-5xl px-6 py-16">
     <div class="max-w-2xl">
+
       <div class="flex items-center gap-6 mb-10">
         <img
           src="/images/logo/logo.webp"
@@ -16,7 +38,7 @@ import Footer from '../components/Footer.astro';
           class="w-20 h-20 rounded-full border border-line"
         />
         <div>
-          <h1 class="text-head text-2xl font-semibold mb-1">清凤</h1>
+          <h1 class="text-head text-2xl font-semibold mb-1">清凤 kilock</h1>
           <p class="text-dim text-sm">Kilock For You</p>
         </div>
       </div>
@@ -26,74 +48,48 @@ import Footer from '../components/Footer.astro';
           这里记录了<strong>清凤</strong>的日常与点滴，也许偶尔会透露一些<strong>crazy</strong>的思绪，还有一些<strong>奇奇怪怪</strong>的东西。
         </p>
         <p>
-          对 AI、开源项目和独立开发有浓厚兴趣。目前主要在用 Claude Code 和 Codex 做各种项目。
-          从一年前到现在没写过一行代码，但 GitHub 满满当当。
+          两名学生、独立开发者。Base 浙江·宁波。研发方向：交易 / 量化 / 神经网络 / Agent / 后端开发。Python 精通，Rust & JS 爱好者。
         </p>
         <p>
-          建站于 2025 年 8 月 3 日。
+          ENTP / INTP。效率和实用至上，反对过度客制化。
+        </p>
+        <p>
+          承认世界没有预设意义，因此选择主动赋予意义。享乐不是放纵，而是把当下体验做成作品与记忆。
         </p>
       </div>
 
-      <div class="mt-10 grid grid-cols-2 gap-4 max-w-sm">
-        <a
-          href="https://github.com/qqqqqf-q"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-dim text-sm hover:text-head transition-colors"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
-        </a>
-        <a
-          href="https://x.com/qqqqqf5"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-dim text-sm hover:text-head transition-colors"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          X / Twitter
-        </a>
-        <a
-          href="https://t.me/NS_qingf_bot"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-dim text-sm hover:text-head transition-colors"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Telegram
-        </a>
-        <a
-          href="mailto:qingf622@outlook.com"
-          class="flex items-center gap-2 text-dim text-sm hover:text-head transition-colors"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
-          Email
-        </a>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="https://github.com/qqqqqf-q" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">GitHub</a>
+        <a href="https://x.com/qqqqqf5" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">X</a>
+        <a href="https://t.me/NS_qingf_bot" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">Telegram</a>
+        <a href="https://www.nodeseek.com/space/21917#/general" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">NodeSeek</a>
+        <a href="mailto:qingf622@outlook.com" class="text-dim text-sm hover:text-head transition-colors">Email</a>
       </div>
 
       <div class="mt-12 pt-8 border-t border-line">
-        <h2 class="text-head text-lg font-semibold mb-4">项目</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <a
-            href="https://github.com/qqqqqf-q/MirrorFlow"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="p-4 bg-card border border-line rounded-lg hover:border-line-soft transition-colors"
-          >
-            <h3 class="text-head text-sm font-semibold mb-1">MirrorFlow</h3>
-            <p class="text-dim text-xs">数字分身 — 用 QQ 聊天记录微调 LLM</p>
-          </a>
-          <a
-            href="https://github.com/kilockok/vitepress-theme-curve"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="p-4 bg-card border border-line rounded-lg hover:border-line-soft transition-colors"
-          >
-            <h3 class="text-head text-sm font-semibold mb-1">本站源码</h3>
-            <p class="text-dim text-xs">基于 VitePress Curve 主题的原版博客</p>
-          </a>
+        <h2 class="text-head text-lg font-semibold mb-4">开源项目</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {projects.map((p) => (
+            <a
+              href={p.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-4 bg-card border border-line rounded-lg hover:border-line-soft transition-colors"
+            >
+              <h3 class="text-head text-sm font-semibold mb-1">{p.name}</h3>
+              <p class="text-dim text-xs leading-relaxed mb-2">{p.desc}</p>
+              <p class="text-fade text-xs">{p.tags}</p>
+            </a>
+          ))}
         </div>
+        <p class="text-dim text-sm mt-4">欢迎提 issue / PR，也非常欢迎找我一起开发，我很闲。</p>
       </div>
+
+      <div class="mt-10 pt-6 border-t border-line text-fade text-xs flex justify-between">
+        <span>由 Kilock 提供技术支持</span>
+        <span>建站于 2025-08-03</span>
+      </div>
+
     </div>
   </main>
 
