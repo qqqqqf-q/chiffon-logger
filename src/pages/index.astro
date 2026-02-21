@@ -9,14 +9,14 @@ const posts = (await getCollection('journal', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="日志" description="你的指尖,拥有改变世界的力量（大概吧）">
+<BaseLayout title="日志" description="Just Do It  --With World">
   <Header />
 
   <main class="mx-auto max-w-5xl px-6 py-16">
     <header class="mb-14">
       <h1 class="text-head text-3xl font-semibold tracking-tight mb-3">清凤日志</h1>
       <p class="text-dim text-base max-w-xl">
-        你的指尖,拥有改变世界的力量（大概吧）
+        Just Do It  --With World
       </p>
     </header>
 
