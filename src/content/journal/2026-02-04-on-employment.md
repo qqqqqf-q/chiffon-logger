@@ -1,6 +1,6 @@
 ---
 title: 何谈就业?
-description: 就业问题
+description: 你不是才一个初三生吗？你为什么要焦虑你的就业问题呢？
 date: 2026-02-04
 tags: [哲学]
 categories: [生存]

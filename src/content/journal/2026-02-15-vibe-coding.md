@@ -1,6 +1,6 @@
 ---
 title: 如何正确的Vibe Coding
-description: 如何正确的Vibe Coding
+description: 哦草我只是想分享经验，不是博眼球来的
 date: 2026-02-15
 tags: [AI]
 categories: [技术]

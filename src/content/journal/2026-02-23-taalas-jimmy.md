@@ -1,6 +1,6 @@
 ---
 title: 对Taalas团队将llama3刻进芯片的一些看法
-description: 独特的看法？
+description: 或许和别人的看法不太一样
 date: 2026-02-23
 tags: [AI]
 categories: [技术]

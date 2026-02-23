@@ -1,6 +1,6 @@
 ---
 title: 我的哲学世界观
-description: 我的哲学世界观-清凤
+description: 我的哲学世界观-清凤 我不想更新世界观了，太清醒不好
 date: 2026-01-20
 tags: [哲学]
 categories: [世界]

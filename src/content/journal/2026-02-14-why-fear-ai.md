@@ -1,6 +1,6 @@
 ---
 title: 我们为什么总是害怕AI
-description: 我们为什么总是害怕AI
+description: 对时代的一点看法，碎碎念
 date: 2026-02-14
 tags: [AI]
 categories: [社会]
