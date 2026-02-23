@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+
+// ── 字数统计 (ported from chiffon-logger) ──────────────────────────────────
+function countPostWords(rawContent: string = ''): number {
+  if (!rawContent) return 0;
+  let text = rawContent
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/~~~[\s\S]*?~~~/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    .replace(/^\s*\[[^\]]+\]:\s*.*$/gm, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/[#>*_~]/g, ' ')
+    .replace(/\s+/g, ' ');
+  const cjkCount = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const wordCount = (text.match(/[A-Za-z0-9]+(?:'[A-Za-z0-9]+)?/g) || []).length;
+  return cjkCount + wordCount;
+}
+
+const posts = await getCollection('journal', ({ data }) => !data.draft);
+const totalPosts = posts.length;
+const totalWords = posts.reduce((sum, post) => sum + countPostWords(post.body ?? ''), 0);
+
+function formatNum(n: number): string {
+  if (n >= 10000) return (n / 10000).toFixed(1) + 'w';
+  return n.toLocaleString('zh-CN');
+}
+---
+
+<div class="site-stats">
+  <span class="stat-item">
+    <span class="stat-label">文章</span>
+    <span class="stat-value">{totalPosts} 篇</span>
+  </span>
+  <span class="sep" aria-hidden="true">·</span>
+  <span class="stat-item">
+    <span class="stat-label">字数</span>
+    <span class="stat-value">{formatNum(totalWords)} 字</span>
+  </span>
+  <span class="sep" aria-hidden="true">·</span>
+  <span class="stat-item">
+    <span class="stat-label">访问</span>
+    <span id="busuanzi_value_site_pv" class="stat-value">--</span>
+  </span>
+  <span class="sep" aria-hidden="true">·</span>
+  <span class="stat-item">
+    <span class="stat-label">访客</span>
+    <span id="busuanzi_value_site_uv" class="stat-value">--</span>
+  </span>
+</div>
+
+<script>
+  // 非本地环境才加载 busuanzi 流量统计
+  if (!['localhost', '127.0.0.1', '0.0.0.0'].includes(location.hostname)) {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+    document.head.appendChild(s);
+  }
+</script>
+
+<style>
+  .site-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0;
+    font-size: 0.8125rem;
+    color: var(--c-text-fade);
+  }
+  .stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .stat-label {
+    opacity: 0.7;
+  }
+  .stat-value {
+    color: var(--c-text-sub);
+  }
+  .sep {
+    margin: 0 0.4rem;
+    opacity: 0.4;
+  }
+  #busuanzi_value_site_pv::after { content: ' 次'; }
+  #busuanzi_value_site_uv::after { content: ' 人'; }
+</style>

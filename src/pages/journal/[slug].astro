@@ -21,6 +21,25 @@ const formattedDate = new Intl.DateTimeFormat('zh-CN', {
   month: 'long',
   day: 'numeric',
 }).format(post.data.date);
+
+// 字数统计（移植自 chiffon-logger）
+function countPostWords(raw: string = ''): number {
+  let text = raw
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/~~~[\s\S]*?~~~/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    .replace(/^\s*\[[^\]]+\]:\s*.*$/gm, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/[#>*_~]/g, ' ')
+    .replace(/\s+/g, ' ');
+  const cjk = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const words = (text.match(/[A-Za-z0-9]+(?:'[A-Za-z0-9]+)?/g) || []).length;
+  return cjk + words;
+}
+const wordCount = countPostWords(post.body ?? '');
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -62,6 +81,11 @@ const formattedDate = new Intl.DateTimeFormat('zh-CN', {
           <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
           <span>&middot;</span>
           <span>清凤</span>
+          <span>&middot;</span>
+          <span>{wordCount.toLocaleString('zh-CN')} 字</span>
+          <span>&middot;</span>
+          <span id="busuanzi_value_page_pv">--</span>
+          <span>次阅读</span>
         </div>
       </header>
 

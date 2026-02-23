@@ -1,10 +1,12 @@
 ---
+import SiteStats from './SiteStats.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-line mt-24">
-  <div class="mx-auto max-w-5xl px-6 py-8 flex items-center justify-between">
+  <div class="mx-auto max-w-5xl px-6 py-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
     <span class="text-fade text-sm">&copy; {year} 清凤</span>
+    <SiteStats />
     <a
       href="https://github.com/qqqqqf-q"
       target="_blank"
