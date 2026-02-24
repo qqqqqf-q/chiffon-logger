@@ -1,0 +1,60 @@
+services:
+  # Docker socket 代理 — 只开放 sandbox 需要的 API，防止 server 被打穿后容器逃逸
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy:latest
+    environment:
+      CONTAINERS: 1
+      POST: 1
+      EXEC: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks:
+      - internal
+
+  sandbox-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - DOCKER_HOST=tcp://dockerproxy:2375
+      - PORT=3001
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - BLOG_ORIGIN=${BLOG_ORIGIN:-https://清凤.fun}
+      - ALLOWED_GITHUB_LOGINS=${ALLOWED_GITHUB_LOGINS:-}
+      - SANDBOX_IMAGE=chiffon-sandbox:latest
+      - NODE_ENV=production
+    depends_on:
+      - dockerproxy
+    restart: unless-stopped
+    networks:
+      - internal
+      - web
+
+  # TLS 终止 + 反向代理（Let's Encrypt 自动证书）
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - sandbox-server
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  internal:
+    internal: true
+  web:
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,7 @@
+# 将 sandbox.清凤.fun 替换为你实际的域名
+
+sandbox.清凤.fun {
+    reverse_proxy sandbox-server:3001
+
+    # WebSocket 需要的 header 升级 caddy 自动处理
+}

@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// PUBLIC_SANDBOX_API 在 .env 中配置，例如 http://localhost:3001 或 https://清凤.fun/api
+const sandboxApi = import.meta.env.PUBLIC_SANDBOX_API ?? 'http://localhost:3001';
+---
+
+<BaseLayout title="终端" description="在线 gVisor 沙盒终端">
+  <Header />
+
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <header class="mb-8">
+      <h1 class="text-head text-3xl font-semibold tracking-tight mb-2">终端</h1>
+      <p class="text-dim text-sm">
+        gVisor 隔离 · 断网 · 登录后可用
+      </p>
+    </header>
+
+    <!-- 鉴权状态区（JS 注入） -->
+    <div id="auth-gate">
+      <div id="auth-loading" class="text-fade text-sm">...</div>
+      <div id="auth-login" class="hidden">
+        <p class="text-body text-sm mb-4">需要 GitHub 登录才能使用沙盒。</p>
+        <a
+          id="github-login-btn"
+          href="#"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#24292f] text-white text-sm font-medium hover:bg-[#32383f] transition-colors"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Login with GitHub
+        </a>
+      </div>
+      <div id="auth-denied" class="hidden">
+        <p class="text-fade text-sm">此帐号无访问权限。</p>
+      </div>
+    </div>
+
+    <!-- 终端容器（登录后显示） -->
+    <div id="terminal-wrap" class="hidden mt-4">
+      <div class="flex items-center justify-between mb-2">
+        <span id="terminal-status" class="text-fade text-xs font-mono">connecting...</span>
+        <button
+          id="terminal-disconnect"
+          class="text-fade text-xs hover:text-body transition-colors"
+        >disconnect</button>
+      </div>
+      <div
+        id="terminal"
+        class="rounded border border-[var(--c-border)] overflow-hidden"
+        style="height: 480px;"
+      ></div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script define:vars={{ sandboxApi }}>
+  const SANDBOX_API = sandboxApi;
+
+  async function checkAuth() {
+    try {
+      const res = await fetch(`${SANDBOX_API}/auth/me`, { credentials: 'include' });
+      if (res.ok) return await res.json();
+      if (res.status === 403) return 'denied';
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function getWsToken() {
+    const res = await fetch(`${SANDBOX_API}/auth/ws-token`, { credentials: 'include' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.token;
+  }
+
+  async function init() {
+    const loading = document.getElementById('auth-loading');
+    const loginEl = document.getElementById('auth-login');
+    const deniedEl = document.getElementById('auth-denied');
+    const loginBtn = document.getElementById('github-login-btn');
+    const terminalWrap = document.getElementById('terminal-wrap');
+
+    loginBtn.href = `${SANDBOX_API}/auth/github`;
+
+    const user = await checkAuth();
+
+    loading.classList.add('hidden');
+
+    if (!user) {
+      loginEl.classList.remove('hidden');
+      return;
+    }
+    if (user === 'denied') {
+      deniedEl.classList.remove('hidden');
+      return;
+    }
+
+    // 已登录 → 加载终端
+    terminalWrap.classList.remove('hidden');
+    const wsToken = await getWsToken();
+    if (!wsToken) {
+      loginEl.classList.remove('hidden');
+      terminalWrap.classList.add('hidden');
+      return;
+    }
+
+    const wsUrl = SANDBOX_API.replace(/^http/, 'ws') + '/ws/terminal?token=' + wsToken;
+    await loadTerminal(wsUrl);
+  }
+
+  async function loadTerminal(wsUrl) {
+    // 动态 import xterm（由 Vite 打包）
+    const { Terminal } = await import('@xterm/xterm');
+    const { FitAddon } = await import('@xterm/addon-fit');
+
+    const term = new Terminal({
+      theme: {
+        background: '#141413',
+        foreground: '#c2c0b6',
+        cursor: '#e8e8e3',
+        selectionBackground: '#40403d',
+      },
+      fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+      fontSize: 14,
+      lineHeight: 1.4,
+      cursorBlink: true,
+    });
+
+    const fitAddon = new FitAddon();
+    term.loadAddon(fitAddon);
+    term.open(document.getElementById('terminal'));
+    fitAddon.fit();
+
+    const statusEl = document.getElementById('terminal-status');
+    const disconnectBtn = document.getElementById('terminal-disconnect');
+
+    const ws = new WebSocket(wsUrl);
+    ws.binaryType = 'arraybuffer';
+
+    ws.onopen = () => {
+      statusEl.textContent = 'connected';
+    };
+
+    ws.onmessage = (ev) => {
+      const raw = typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data);
+      // 控制帧
+      if (raw.startsWith('{')) {
+        try {
+          const msg = JSON.parse(raw);
+          if (msg.t === 'ready') {
+            statusEl.textContent = `${msg.sandbox_id}`;
+          } else if (msg.t === 'exit') {
+            statusEl.textContent = `exited (${msg.code})`;
+            ws.close();
+          } else if (msg.t === 'error') {
+            term.write(`\r\n\x1b[31m[error] ${msg.msg}\x1b[0m\r\n`);
+          }
+        } catch { /* 非 JSON，当普通输出处理 */ }
+        return;
+      }
+      term.write(raw);
+    };
+
+    ws.onclose = (ev) => {
+      statusEl.textContent = `disconnected (${ev.code})`;
+      term.write('\r\n\x1b[90m[connection closed]\x1b[0m\r\n');
+    };
+
+    ws.onerror = () => {
+      statusEl.textContent = 'error';
+      term.write('\r\n\x1b[31m[websocket error]\x1b[0m\r\n');
+    };
+
+    term.onData((data) => {
+      if (ws.readyState === WebSocket.OPEN) ws.send(data);
+    });
+
+    term.onResize(({ cols, rows }) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ t: 'resize', cols, rows }));
+      }
+    });
+
+    disconnectBtn.addEventListener('click', () => {
+      ws.close(1000);
+      term.write('\r\n\x1b[90m[disconnected]\x1b[0m\r\n');
+    });
+
+    // 响应窗口 resize
+    const observer = new ResizeObserver(() => fitAddon.fit());
+    observer.observe(document.getElementById('terminal'));
+  }
+
+  init();
+</script>
