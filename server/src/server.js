@@ -39,6 +39,8 @@ registerCleanupHooks(registry, provider);
 
 // login → active sandbox count
 const userSandboxCount = new Map();
+// synchronous reservation counter to prevent race conditions on the limit check
+let pendingCount = 0;
 
 const app = Fastify({ logger: { level: 'info' } });
 
@@ -137,7 +139,7 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
         return;
     }
 
-    if (registry.size >= Number(MAX_SANDBOXES)) {
+    if (registry.size + pendingCount >= Number(MAX_SANDBOXES)) {
         socket.send(JSON.stringify({ t: 'error', msg: 'server_full' }));
         socket.close(1013, 'Try Again Later');
         return;
@@ -149,6 +151,9 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
         socket.close(1013, 'Too Many Sessions');
         return;
     }
+    // Reserve slot synchronously before any await — prevents concurrent connections
+    // from all passing the limit check before any container is registered
+    pendingCount++;
     userSandboxCount.set(session.login, userCount + 1);
 
     const initCols = Math.max(40, Math.min(500, Number(cols) || 80));
@@ -167,11 +172,17 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
         registry.register(handle);
         app.log.info({ sandbox_id: handle.sandbox_id, runtime: result.runtimeNote }, 'sandbox created');
     } catch (err) {
+        pendingCount--;
+        const cur = userSandboxCount.get(session.login) ?? 1;
+        if (cur <= 1) userSandboxCount.delete(session.login);
+        else userSandboxCount.set(session.login, cur - 1);
         app.log.error({ err }, 'sandbox create failed');
         socket.send(JSON.stringify({ t: 'error', msg: 'sandbox unavailable' }));
         socket.close(1011, 'Sandbox error');
         return;
     }
+    // Container is now tracked in registry; release the pending reservation
+    pendingCount--;
 
     socket.send(JSON.stringify({ t: 'ready', sandbox_id: handle.sandbox_id }));
 
