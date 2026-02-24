@@ -2,9 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
-// PUBLIC_SANDBOX_API 在 .env 中配置，例如 http://localhost:3001 或 https://清凤.fun/api
-const sandboxApi = import.meta.env.PUBLIC_SANDBOX_API ?? 'http://localhost:3001';
 ---
 
 <BaseLayout title="终端" description="在线 gVisor 沙盒终端">
@@ -59,8 +56,9 @@ const sandboxApi = import.meta.env.PUBLIC_SANDBOX_API ?? 'http://localhost:3001'
   <Footer />
 </BaseLayout>
 
-<script define:vars={{ sandboxApi }}>
-  const SANDBOX_API = sandboxApi;
+<script>
+  // import.meta.env 由 Vite 在 build 时替换，不能用 define:vars（会变成 inline script 失去模块能力）
+  const SANDBOX_API = import.meta.env.PUBLIC_SANDBOX_API ?? 'http://localhost:3001';
 
   async function checkAuth() {
     try {
