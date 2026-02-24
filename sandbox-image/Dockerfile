@@ -20,21 +20,6 @@ COPY motd /etc/motd
 COPY hack /usr/local/bin/hack
 RUN chmod +x /usr/local/bin/hack
 
-# 访客主目录彩蛋
-RUN mkdir -p /home/visitor && \
-    printf '%s\n' \
-        '# 你找到了' \
-        '' \
-        '代码在沙里' \
-        '沙在容器里' \
-        '容器在 gVisor 里' \
-        '清凤在屏幕外' \
-        '' \
-        '  — 清凤' \
-    > /home/visitor/.secret && \
-    chown visitor:visitor /home/visitor/.secret && \
-    chmod 600 /home/visitor/.secret
-
 # 自定义 PS1 和环境
 RUN printf '%s\n' \
         'export PS1="\[\033[38;5;39m\]visitor\[\033[0m\]@\[\033[38;5;245m\]sandbox\[\033[0m\]:\[\033[38;5;220m\]\w\[\033[0m\]\$ "' \
