@@ -158,6 +158,7 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
 
     let handle = null;
     let bridge = null;
+    let cleanedUp = false;
 
     // 创建容器
     try {
@@ -216,6 +217,8 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
     });
 
     function cleanup() {
+        if (cleanedUp) return;
+        cleanedUp = true;
         if (bridge) {
             bridge.kill();
             bridge = null;

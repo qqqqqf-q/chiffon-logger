@@ -102,5 +102,8 @@ export class OciProvider {
         if (raw.spawnError) {
             throw makeError(ErrorCode.ERR_SANDBOX_EXEC_FAILED, `destroy spawn 失败: ${raw.spawnError.message}`);
         }
+        if (raw.exit_code !== 0) {
+            throw makeError(ErrorCode.ERR_SANDBOX_EXEC_FAILED, `destroy 失败 (exit ${raw.exit_code}): ${raw.stderr}`.slice(0, 500));
+        }
     }
 }
