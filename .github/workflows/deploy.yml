@@ -37,6 +37,8 @@ jobs:
 
       - name: build
         run: pnpm build
+        env:
+          PUBLIC_SANDBOX_API: ${{ vars.PUBLIC_SANDBOX_API }}
 
       - name: upload pages artifact
         uses: actions/upload-pages-artifact@v3
