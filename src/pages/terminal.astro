@@ -40,10 +40,16 @@ import Footer from '../components/Footer.astro';
     <div id="terminal-wrap" class="hidden mt-4">
       <div class="flex items-center justify-between mb-2">
         <span id="terminal-status" class="text-fade text-xs font-mono">connecting...</span>
-        <button
-          id="terminal-disconnect"
-          class="text-fade text-xs hover:text-body transition-colors"
-        >disconnect</button>
+        <div class="flex items-center gap-3">
+          <button
+            id="terminal-disconnect"
+            class="text-fade text-xs hover:text-body transition-colors"
+          >disconnect</button>
+          <button
+            id="terminal-connect"
+            class="hidden text-fade text-xs hover:text-body transition-colors"
+          >connect</button>
+        </div>
       </div>
       <div
         class="rounded border border-[var(--c-border)] overflow-hidden"
@@ -51,6 +57,7 @@ import Footer from '../components/Footer.astro';
       >
         <div id="terminal" style="width:100%;height:100%"></div>
       </div>
+      <p class="text-fade text-xs mt-2">单次会话最多 20 分钟（闲置 10 分钟提前结束），到期后容器自动销毁。</p>
     </div>
   </main>
 
@@ -60,6 +67,13 @@ import Footer from '../components/Footer.astro';
 <script>
   // import.meta.env 由 Vite 在 build 时替换，不能用 define:vars（会变成 inline script 失去模块能力）
   const SANDBOX_API = import.meta.env.PUBLIC_SANDBOX_API ?? 'http://localhost:3001';
+
+  // ─── 终端模块级状态（支持断线重连） ─────────────────────────────────────────
+  let _term = null;
+  let _fitAddon = null;
+  let _currentWs = null;
+  let _dataDisposable = null;
+  let _resizeDisposable = null;
 
   async function checkAuth() {
     try {
@@ -118,48 +132,89 @@ import Footer from '../components/Footer.astro';
     const { Terminal } = await import('@xterm/xterm');
     const { FitAddon } = await import('@xterm/addon-fit');
 
-    const term = new Terminal({
-      theme: {
-        background: '#141413',
-        foreground: '#c2c0b6',
-        cursor: '#e8e8e3',
-        selectionBackground: '#40403d',
-      },
-      fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-      fontSize: 14,
-      lineHeight: 1.4,
-      cursorBlink: true,
-      scrollOnUserInput: true,
-      smoothScrollDuration: 0,
-    });
-
-    const fitAddon = new FitAddon();
-    term.loadAddon(fitAddon);
-
     const termEl = document.getElementById('terminal');
-    term.open(termEl);
+    const statusEl = document.getElementById('terminal-status');
+    const disconnectBtn = document.getElementById('terminal-disconnect');
+    const connectBtn = document.getElementById('terminal-connect');
 
-    // 等浏览器完成布局后再 fit，避免容器尺寸尚未确定
-    await new Promise(r => requestAnimationFrame(r));
-    fitAddon.fit();
-    term.scrollToBottom();
-    term.focus();
+    if (!_term) {
+      _term = new Terminal({
+        theme: {
+          background: '#141413',
+          foreground: '#c2c0b6',
+          cursor: '#e8e8e3',
+          selectionBackground: '#40403d',
+        },
+        fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+        fontSize: 14,
+        lineHeight: 1.4,
+        cursorBlink: true,
+        scrollOnUserInput: true,
+        smoothScrollDuration: 0,
+      });
 
-    const { cols, rows } = term;
+      _fitAddon = new FitAddon();
+      _term.loadAddon(_fitAddon);
+      _term.open(termEl);
+
+      // 等浏览器完成布局后再 fit，避免容器尺寸尚未确定
+      await new Promise(r => requestAnimationFrame(r));
+      _fitAddon.fit();
+      _term.scrollToBottom();
+
+      const observer = new ResizeObserver(() => {
+        requestAnimationFrame(() => {
+          _fitAddon.fit();
+          _term.scrollToBottom();
+        });
+      });
+      observer.observe(termEl);
+
+      // 按钮事件只注册一次
+      disconnectBtn.addEventListener('click', () => {
+        _currentWs?.close(1000);
+      });
+
+      connectBtn.addEventListener('click', async () => {
+        connectBtn.classList.add('hidden');
+        statusEl.textContent = 'connecting...';
+        const newToken = await getWsToken();
+        if (!newToken) {
+          statusEl.textContent = 'auth error';
+          connectBtn.classList.remove('hidden');
+          return;
+        }
+        openWs(newToken, statusEl, disconnectBtn, connectBtn);
+      });
+    } else {
+      _term.writeln('\r\n\x1b[90m─── new session ───\x1b[0m');
+    }
+
+    _term.focus();
+    openWs(wsToken, statusEl, disconnectBtn, connectBtn);
+  }
+
+  function openWs(wsToken, statusEl, disconnectBtn, connectBtn) {
+    // 清除上一个连接的 terminal 输入绑定，避免多次叠加
+    _dataDisposable?.dispose();
+    _resizeDisposable?.dispose();
+
+    const { cols, rows } = _term;
     const wsUrl = SANDBOX_API.replace(/^http/, 'ws')
       + `/ws/terminal?token=${wsToken}&cols=${cols}&rows=${rows}`;
 
-    const statusEl = document.getElementById('terminal-status');
-    const disconnectBtn = document.getElementById('terminal-disconnect');
+    _currentWs = new WebSocket(wsUrl);
+    _currentWs.binaryType = 'arraybuffer';
 
-    const ws = new WebSocket(wsUrl);
-    ws.binaryType = 'arraybuffer';
+    disconnectBtn.classList.remove('hidden');
+    connectBtn.classList.add('hidden');
+    statusEl.textContent = 'connecting...';
 
-    ws.onopen = () => {
+    _currentWs.onopen = () => {
       statusEl.textContent = 'connected';
     };
 
-    ws.onmessage = (ev) => {
+    _currentWs.onmessage = (ev) => {
       const raw = typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data);
       if (raw.startsWith('{')) {
         try {
@@ -168,48 +223,39 @@ import Footer from '../components/Footer.astro';
             statusEl.textContent = 'connected';
           } else if (msg.t === 'exit') {
             statusEl.textContent = 'session ended';
-            ws.close();
           } else if (msg.t === 'error') {
-            term.write(`\r\n\x1b[31m[error] ${msg.msg}\x1b[0m\r\n`);
-            term.scrollToBottom();
+            _term.write(`\r\n\x1b[31m[error] ${msg.msg}\x1b[0m\r\n`);
+            _term.scrollToBottom();
           }
         } catch { /* 非 JSON，当普通输出处理 */ }
         return;
       }
-      term.write(raw, () => term.scrollToBottom());
+      _term.write(raw, () => _term.scrollToBottom());
     };
 
-    ws.onclose = () => {
+    _currentWs.onclose = () => {
       statusEl.textContent = 'disconnected';
-      term.write('\r\n\x1b[90m[connection closed]\x1b[0m\r\n');
+      _term.write('\r\n\x1b[90m[connection closed]\x1b[0m\r\n');
+      disconnectBtn.classList.add('hidden');
+      connectBtn.classList.remove('hidden');
     };
 
-    ws.onerror = () => {
+    _currentWs.onerror = () => {
       statusEl.textContent = 'error';
-      term.write('\r\n\x1b[31m[websocket error]\x1b[0m\r\n');
+      _term.write('\r\n\x1b[31m[websocket error]\x1b[0m\r\n');
+      disconnectBtn.classList.add('hidden');
+      connectBtn.classList.remove('hidden');
     };
 
-    term.onData((data) => {
-      if (ws.readyState === WebSocket.OPEN) ws.send(data);
+    _dataDisposable = _term.onData((data) => {
+      if (_currentWs?.readyState === WebSocket.OPEN) _currentWs.send(data);
     });
 
-    term.onResize(({ cols, rows }) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ t: 'resize', cols, rows }));
+    _resizeDisposable = _term.onResize(({ cols, rows }) => {
+      if (_currentWs?.readyState === WebSocket.OPEN) {
+        _currentWs.send(JSON.stringify({ t: 'resize', cols, rows }));
       }
     });
-
-    disconnectBtn.addEventListener('click', () => {
-      ws.close(1000);
-    });
-
-    const observer = new ResizeObserver(() => {
-      requestAnimationFrame(() => {
-        fitAddon.fit();
-        term.scrollToBottom();
-      });
-    });
-    observer.observe(termEl);
   }
 
   init();
