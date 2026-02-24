@@ -46,5 +46,10 @@ RUN printf '%s\n' \
 # 显示 motd（bashrc 里也加一次，防止非 login shell 不读 profile）
 RUN echo 'source /etc/profile.d/sandbox.sh' >> /home/visitor/.bashrc
 
+# 容器启动入口（在后台启动彩蛋进程，再 exec 交出控制权）
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 USER visitor
 WORKDIR /home/visitor
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
