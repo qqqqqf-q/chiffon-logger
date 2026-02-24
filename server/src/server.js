@@ -20,6 +20,7 @@ const {
     // 可选：逗号分隔的 GitHub 用户名白名单，不填则所有 GitHub 用户可用
     ALLOWED_GITHUB_LOGINS = '',
     SANDBOX_IMAGE = 'chiffon-sandbox:latest',
+    MAX_SANDBOXES = '20',
 } = process.env;
 
 if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET || !JWT_SECRET) {
@@ -129,6 +130,12 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
     if (!session) {
         socket.send(JSON.stringify({ t: 'error', msg: 'unauthenticated' }));
         socket.close(4001, 'Unauthorized');
+        return;
+    }
+
+    if (registry.size >= Number(MAX_SANDBOXES)) {
+        socket.send(JSON.stringify({ t: 'error', msg: 'server_full' }));
+        socket.close(1013, 'Try Again Later');
         return;
     }
 
