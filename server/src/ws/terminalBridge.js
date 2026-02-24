@@ -1,6 +1,7 @@
 import pty from 'node-pty';
 
-const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+const IDLE_TIMEOUT_MS = 10 * 60 * 1000;   // 10 分钟无输入/输出则销毁
+const MAX_LIFETIME_MS = 20 * 60 * 1000;   // 20 分钟绝对上限（无论是否活跃）
 
 /**
  * 桥接 node-pty 和 docker exec，提供交互式终端。
@@ -23,6 +24,9 @@ export function createTerminalBridge({ containerId, cols, rows, onData, onExit }
 
     let idleTimer = resetIdleTimer(null);
 
+    // 绝对生命周期：到期后强制杀掉进程，触发 onExit → cleanup
+    const lifetimeTimer = setTimeout(() => proc.kill(), MAX_LIFETIME_MS);
+
     function resetIdleTimer(existing) {
         if (existing) clearTimeout(existing);
         return setTimeout(() => proc.kill(), IDLE_TIMEOUT_MS);
@@ -35,6 +39,7 @@ export function createTerminalBridge({ containerId, cols, rows, onData, onExit }
 
     proc.onExit(({ exitCode, signal }) => {
         clearTimeout(idleTimer);
+        clearTimeout(lifetimeTimer);
         onExit(exitCode, signal);
     });
 
@@ -48,6 +53,7 @@ export function createTerminalBridge({ containerId, cols, rows, onData, onExit }
         },
         kill() {
             clearTimeout(idleTimer);
+            clearTimeout(lifetimeTimer);
             try { proc.kill(); } catch { /* already dead */ }
         },
     };

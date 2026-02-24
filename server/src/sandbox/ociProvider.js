@@ -49,8 +49,8 @@ function blogResources() {
         max_wall_clock_ms: 60_000,
         max_stdout_bytes: 512 * 1024,
         max_stderr_bytes: 64 * 1024,
-        max_memory_mb: 256,
-        max_cpu: 0.5,
+        max_memory_mb: 64,
+        max_cpu: 0.25,
     };
 }
 

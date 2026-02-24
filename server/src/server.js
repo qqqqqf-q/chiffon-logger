@@ -68,7 +68,8 @@ function getSessionFromRequest(request) {
 
 app.get('/auth/github', async (request, reply) => {
     const state = randomBytes(16).toString('hex');
-    reply.setCookie('oauth_state', state, { httpOnly: true, sameSite: 'lax', path: '/', maxAge: 300 });
+    const isProdState = process.env.NODE_ENV === 'production';
+    reply.setCookie('oauth_state', state, { httpOnly: true, sameSite: 'lax', secure: isProdState, path: '/', maxAge: 300 });
     return reply.redirect(buildOAuthUrl(GITHUB_CLIENT_ID, state));
 });
 
