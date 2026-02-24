@@ -7,10 +7,10 @@ import Footer from '../components/Footer.astro';
 <BaseLayout title="终端" description="在线 gVisor 沙盒终端">
   <Header />
 
-  <main class="mx-auto max-w-5xl px-6 py-16">
-    <header class="mb-8">
-      <h1 class="text-head text-3xl font-semibold tracking-tight mb-2">终端</h1>
-      <p class="text-dim text-sm">
+  <main class="mx-auto max-w-5xl px-6 py-10">
+    <header class="mb-6">
+      <h1 class="text-head text-2xl font-semibold tracking-tight mb-1">终端</h1>
+      <p class="text-fade text-xs">
         gVisor 隔离 · 断网 · 登录后可用
       </p>
     </header>
@@ -46,10 +46,11 @@ import Footer from '../components/Footer.astro';
         >disconnect</button>
       </div>
       <div
-        id="terminal"
         class="rounded border border-[var(--c-border)] overflow-hidden"
-        style="height: 480px;"
-      ></div>
+        style="height: calc(100vh - 280px); min-height: 400px;"
+      >
+        <div id="terminal" style="width:100%;height:100%"></div>
+      </div>
     </div>
   </main>
 
@@ -109,12 +110,11 @@ import Footer from '../components/Footer.astro';
       return;
     }
 
-    const wsUrl = SANDBOX_API.replace(/^http/, 'ws') + '/ws/terminal?token=' + wsToken;
-    await loadTerminal(wsUrl);
+    await loadTerminal(wsToken);
   }
 
-  async function loadTerminal(wsUrl) {
-    // 动态 import xterm（由 Vite 打包）
+  async function loadTerminal(wsToken) {
+    await import('@xterm/xterm/css/xterm.css');
     const { Terminal } = await import('@xterm/xterm');
     const { FitAddon } = await import('@xterm/addon-fit');
 
@@ -129,12 +129,25 @@ import Footer from '../components/Footer.astro';
       fontSize: 14,
       lineHeight: 1.4,
       cursorBlink: true,
+      scrollOnUserInput: true,
+      smoothScrollDuration: 0,
     });
 
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon);
-    term.open(document.getElementById('terminal'));
+
+    const termEl = document.getElementById('terminal');
+    term.open(termEl);
+
+    // 等浏览器完成布局后再 fit，避免容器尺寸尚未确定
+    await new Promise(r => requestAnimationFrame(r));
     fitAddon.fit();
+    term.scrollToBottom();
+    term.focus();
+
+    const { cols, rows } = term;
+    const wsUrl = SANDBOX_API.replace(/^http/, 'ws')
+      + `/ws/terminal?token=${wsToken}&cols=${cols}&rows=${rows}`;
 
     const statusEl = document.getElementById('terminal-status');
     const disconnectBtn = document.getElementById('terminal-disconnect');
@@ -148,26 +161,26 @@ import Footer from '../components/Footer.astro';
 
     ws.onmessage = (ev) => {
       const raw = typeof ev.data === 'string' ? ev.data : new TextDecoder().decode(ev.data);
-      // 控制帧
       if (raw.startsWith('{')) {
         try {
           const msg = JSON.parse(raw);
           if (msg.t === 'ready') {
-            statusEl.textContent = `${msg.sandbox_id}`;
+            statusEl.textContent = 'connected';
           } else if (msg.t === 'exit') {
-            statusEl.textContent = `exited (${msg.code})`;
+            statusEl.textContent = 'session ended';
             ws.close();
           } else if (msg.t === 'error') {
             term.write(`\r\n\x1b[31m[error] ${msg.msg}\x1b[0m\r\n`);
+            term.scrollToBottom();
           }
         } catch { /* 非 JSON，当普通输出处理 */ }
         return;
       }
-      term.write(raw);
+      term.write(raw, () => term.scrollToBottom());
     };
 
-    ws.onclose = (ev) => {
-      statusEl.textContent = `disconnected (${ev.code})`;
+    ws.onclose = () => {
+      statusEl.textContent = 'disconnected';
       term.write('\r\n\x1b[90m[connection closed]\x1b[0m\r\n');
     };
 
@@ -188,12 +201,15 @@ import Footer from '../components/Footer.astro';
 
     disconnectBtn.addEventListener('click', () => {
       ws.close(1000);
-      term.write('\r\n\x1b[90m[disconnected]\x1b[0m\r\n');
     });
 
-    // 响应窗口 resize
-    const observer = new ResizeObserver(() => fitAddon.fit());
-    observer.observe(document.getElementById('terminal'));
+    const observer = new ResizeObserver(() => {
+      requestAnimationFrame(() => {
+        fitAddon.fit();
+        term.scrollToBottom();
+      });
+    });
+    observer.observe(termEl);
   }
 
   init();

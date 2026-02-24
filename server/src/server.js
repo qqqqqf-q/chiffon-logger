@@ -122,8 +122,7 @@ app.get('/auth/ws-token', async (request, reply) => {
 // ─── WebSocket 终端 ─────────────────────────────────────────────────────────
 
 app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
-    // 从 query 取短命 ws-token
-    const { token } = request.query ?? {};
+    const { token, cols, rows } = request.query ?? {};
     const session = token ? verify(token, JWT_SECRET) : null;
 
     if (!session) {
@@ -131,6 +130,9 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
         socket.close(4001, 'Unauthorized');
         return;
     }
+
+    const initCols = Math.max(40, Math.min(500, Number(cols) || 80));
+    const initRows = Math.max(10, Math.min(200, Number(rows) || 24));
 
     app.log.info({ login: session.login }, 'terminal connect');
 
@@ -155,8 +157,8 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
     // 建立 PTY 桥
     bridge = createTerminalBridge({
         containerId: handle.sandbox_id,
-        cols: 80,
-        rows: 24,
+        cols: initCols,
+        rows: initRows,
         onData(data) {
             if (socket.readyState === socket.OPEN) {
                 socket.send(data);
