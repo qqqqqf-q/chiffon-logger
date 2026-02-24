@@ -21,6 +21,7 @@ const {
     ALLOWED_GITHUB_LOGINS = '',
     SANDBOX_IMAGE = 'chiffon-sandbox:latest',
     MAX_SANDBOXES = '20',
+    MAX_SANDBOXES_PER_USER = '2',
 } = process.env;
 
 if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET || !JWT_SECRET) {
@@ -35,6 +36,9 @@ const allowedLogins = ALLOWED_GITHUB_LOGINS
 const provider = new OciProvider({ image: SANDBOX_IMAGE });
 const registry = new SandboxRegistry();
 registerCleanupHooks(registry, provider);
+
+// login → active sandbox count
+const userSandboxCount = new Map();
 
 const app = Fastify({ logger: { level: 'info' } });
 
@@ -139,6 +143,14 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
         return;
     }
 
+    const userCount = userSandboxCount.get(session.login) ?? 0;
+    if (userCount >= Number(MAX_SANDBOXES_PER_USER)) {
+        socket.send(JSON.stringify({ t: 'error', msg: 'user_limit_reached' }));
+        socket.close(1013, 'Too Many Sessions');
+        return;
+    }
+    userSandboxCount.set(session.login, userCount + 1);
+
     const initCols = Math.max(40, Math.min(500, Number(cols) || 80));
     const initRows = Math.max(10, Math.min(200, Number(rows) || 24));
 
@@ -215,6 +227,9 @@ app.get('/ws/terminal', { websocket: true }, async (socket, request) => {
             });
             handle = null;
         }
+        const cur = userSandboxCount.get(session.login) ?? 1;
+        if (cur <= 1) userSandboxCount.delete(session.login);
+        else userSandboxCount.set(session.login, cur - 1);
     }
 });
 

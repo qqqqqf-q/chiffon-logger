@@ -26,6 +26,9 @@ services:
       - ALLOWED_GITHUB_LOGINS=${ALLOWED_GITHUB_LOGINS:-}
       - SANDBOX_IMAGE=chiffon-sandbox:latest
       - NODE_ENV=production
+      - MAX_SANDBOXES=${MAX_SANDBOXES:-20}
+      - MAX_SANDBOXES_PER_USER=${MAX_SANDBOXES_PER_USER:-1}
+    mem_limit: 256m
     depends_on:
       - dockerproxy
     restart: unless-stopped
