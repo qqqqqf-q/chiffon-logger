@@ -1,6 +1,6 @@
 ---
 title: 过去没有如果，但未来有
-description: 有些绝对
+description: 这什么奇怪的标题
 date: 2026-02-03
 tags: [哲学]
 categories: [世界]

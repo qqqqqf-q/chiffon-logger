@@ -1,6 +1,6 @@
 ---
 title: 末日论者 观后感
-description: 无法共情
+description: 
 date: 2026-01-21
 tags: [哲学]
 categories: [世界]
