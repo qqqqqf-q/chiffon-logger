@@ -87,7 +87,7 @@ const myInfo = {
           href={friend.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex items-center gap-4 p-5 bg-card border border-line rounded-lg transition-colors hover:border-line-soft"
+          class="group flex items-center gap-4 p-5 bg-card border border-line rounded-row transition-colors duration-normal ease-out hover:border-line-soft"
         >
           <img
             src={friend.avatar}
@@ -96,7 +96,7 @@ const myInfo = {
             loading="lazy"
           />
           <div class="min-w-0">
-            <h2 class="text-head text-sm font-semibold truncate group-hover:text-body transition-colors">
+            <h2 class="text-head text-sm font-semibold truncate group-hover:text-body transition-colors duration-normal ease-out">
               {friend.name}
             </h2>
             <p class="text-dim text-xs mt-0.5 line-clamp-2">
@@ -116,7 +116,7 @@ const myInfo = {
         </p>
       </div>
 
-      <div class="p-5 bg-card border border-line rounded-lg mb-8">
+      <div class="p-5 bg-card border border-line rounded-row mb-8">
         <h3 class="text-head text-sm font-semibold mb-3">我的友链信息</h3>
         <div class="space-y-1.5 text-sm">
           <div class="flex gap-2">

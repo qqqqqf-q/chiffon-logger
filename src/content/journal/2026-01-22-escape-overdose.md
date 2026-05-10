@@ -1,5 +1,5 @@
 ---
-title: 我是如何逃离Overdose的?
+title: 我是如何逃离依赖深渊的?
 description: 这篇文章帮助不到任何人，因为我知道他们不愿意被帮助
 date: 2026-01-22
 tags: [哲学]

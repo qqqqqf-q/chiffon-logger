@@ -1,6 +1,6 @@
 ---
-title: Claude Code 开源了，然后呢？
-description: 黑盒本来就不是秘密
+title: Claude Code 开源了，什么是我们可以学到的
+description: 并不是源码
 date: 2026-03-31
 tags: [AI]
 categories: [技术]

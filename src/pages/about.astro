@@ -6,6 +6,12 @@ import Giscus from '../components/Giscus.astro';
 
 const projects = [
   {
+    name: "Arkloop",
+    desc: "开源对话式 AI Agent 构建平台，LLM 驱动的智能体运行时。",
+    tags: "Agent · LLM · 开源平台",
+    link: "https://github.com/qqqqqf-q/Arkloop",
+  },
+  {
     name: "MirrorFlow",
     desc: "用 C2C 聊天记录微调大模型，还原你的表达风格。",
     tags: "LLM · 微调 · 数字分身",
@@ -40,37 +46,30 @@ const projects = [
 
       <div class="flex items-center gap-6 mb-10">
         <img
-          src="/images/logo/logo.webp"
+          src="https://avatars.githubusercontent.com/u/104579013?v=4"
           alt="清凤"
           class="w-20 h-20 rounded-full border border-line"
         />
         <div>
           <h1 class="text-head text-2xl font-semibold mb-1">清凤 kilock</h1>
-          <p class="text-dim text-sm">Kilock For You</p>
         </div>
       </div>
 
       <div class="prose">
         <p>
-          这里记录了<strong>清凤</strong>和<strong>kilock</strong>和的日常与点滴，偶尔发发技术Blog。
+          这里记录了<strong>清凤</strong>和<strong>kilock</strong>和的日常与点滴，偶尔发发技术Blog
         </p>
         <p>
           两名学生/全栈开发者
         </p>
-        <p>
-          ENTP / INTP。效率和实用至上
-        </p>
-        <p>
-          承认世界没有预设意义，因此选择主动赋予意义
-        </p>
       </div>
 
       <div class="mt-8 flex flex-wrap gap-4">
-        <a href="https://github.com/qqqqqf-q" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">GitHub</a>
-        <a href="https://x.com/qqqqqf5" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">X</a>
-        <a href="https://t.me/NS_qingf_bot" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">Telegram</a>
-        <a href="https://www.nodeseek.com/space/21917#/general" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors">NodeSeek</a>
-        <a href="mailto:qingf622@outlook.com" class="text-dim text-sm hover:text-head transition-colors">Email</a>
+        <a href="https://github.com/qqqqqf-q" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors duration-normal ease-out">GitHub</a>
+        <a href="https://x.com/qqqqqf_" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors duration-normal ease-out">X</a>
+        <a href="https://t.me/NS_qingf_bot" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors duration-normal ease-out">Telegram</a>
+        <a href="https://www.nodeseek.com/space/21917#/general" target="_blank" rel="noopener noreferrer" class="text-dim text-sm hover:text-head transition-colors duration-normal ease-out">NodeSeek</a>
+        <a href="mailto:qingf622@outlook.com" class="text-dim text-sm hover:text-head transition-colors duration-normal ease-out">Email</a>
       </div>
 
       <div class="mt-12 pt-8 border-t border-line">
@@ -81,7 +80,7 @@ const projects = [
               href={p.link}
               target="_blank"
               rel="noopener noreferrer"
-              class="p-4 bg-card border border-line rounded-lg hover:border-line-soft transition-colors"
+              class="p-4 bg-card border border-line rounded-row hover:border-line-soft transition-colors duration-normal ease-out"
             >
               <h3 class="text-head text-sm font-semibold mb-1">{p.name}</h3>
               <p class="text-dim text-xs leading-relaxed mb-2">{p.desc}</p>

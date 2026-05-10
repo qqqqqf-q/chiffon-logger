@@ -20,32 +20,30 @@ const formattedDate = new Intl.DateTimeFormat('zh-CN', {
 
 <a href={`/${basePath}/${slug}`} class="group block">
   <article
-    class="h-full p-6 bg-card border border-line rounded-lg transition-colors hover:border-line-soft"
+    class="h-full p-6 bg-card border border-line rounded-row transition-colors duration-normal ease-out hover:border-line-soft flex flex-col"
   >
-    {(tags.length > 0 || categories.length > 0) && (
-      <div class="flex flex-wrap gap-1.5 mb-4">
-        {categories.map((cat) => (
-          <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
-            {cat}
-          </span>
-        ))}
-        {tags.map((tag) => (
-          <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
-            {tag}
-          </span>
-        ))}
-      </div>
-    )}
+    <div class="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
+      {categories.map((cat) => (
+        <span class="inline-flex items-center bg-chip text-[var(--c-text-tertiary)] text-[11px] px-1.5 py-0.5 rounded-md font-medium">
+          {cat}
+        </span>
+      ))}
+      {tags.map((tag) => (
+        <span class="inline-flex items-center bg-chip text-[var(--c-text-tertiary)] text-[11px] px-1.5 py-0.5 rounded-md font-medium">
+          {tag}
+        </span>
+      ))}
+    </div>
 
-    <h2 class="text-head font-semibold text-base leading-snug mb-2 group-hover:text-body transition-colors">
+    <h2 class="text-head font-semibold text-base leading-snug mb-2 group-hover:text-body transition-colors duration-normal ease-out line-clamp-2">
       {title}
     </h2>
 
-    <p class="text-dim text-sm leading-relaxed line-clamp-3 mb-5">
+    <p class="text-dim text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
       {description}
     </p>
 
-    <div class="flex items-center gap-2 text-fade text-xs mt-auto">
+    <div class="flex items-center gap-2 text-fade text-xs">
       <time datetime={date.toISOString()}>{formattedDate}</time>
       <span>&middot;</span>
       <span>清凤</span>

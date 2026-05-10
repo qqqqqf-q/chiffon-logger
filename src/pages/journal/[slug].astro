@@ -47,7 +47,7 @@ const wordCount = countPostWords(post.body ?? '');
 
   <main class="mx-auto max-w-5xl px-6 py-16">
     <div class="mb-8">
-      <a href="/" class="text-fade text-sm hover:text-dim transition-colors">
+      <a href="/" class="text-fade text-sm hover:text-dim transition-colors duration-normal ease-out">
         &larr; 返回日志
       </a>
     </div>
@@ -57,12 +57,12 @@ const wordCount = countPostWords(post.body ?? '');
         {((post.data.tags && post.data.tags.length > 0) || (post.data.categories && post.data.categories.length > 0)) && (
           <div class="flex flex-wrap gap-1.5 mb-5">
             {post.data.categories?.map((cat) => (
-              <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+              <span class="inline-flex items-center bg-chip text-[var(--c-text-tertiary)] text-[11px] px-1.5 py-0.5 rounded-md font-medium">
                 {cat}
               </span>
             ))}
             {post.data.tags?.map((tag) => (
-              <span class="bg-chip text-dim text-xs px-2.5 py-0.5 rounded-full">
+              <span class="inline-flex items-center bg-chip text-[var(--c-text-tertiary)] text-[11px] px-1.5 py-0.5 rounded-md font-medium">
                 {tag}
               </span>
             ))}

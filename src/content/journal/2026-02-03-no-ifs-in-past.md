@@ -1,6 +1,6 @@
 ---
 title: 过去没有如果，但未来有
-description: 这什么奇怪的标题
+description: 标题很奇怪,但很有看法
 date: 2026-02-03
 tags: [哲学]
 categories: [世界]
